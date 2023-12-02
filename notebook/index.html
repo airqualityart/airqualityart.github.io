@@ -125,6 +125,28 @@ printf("%d %d", ++n, n*n)</code></pre>
       <p>In a switch/case statement, use break at the end of each clause to make sure that no other clause is
       executed. Otherwise, several clauses may be executed.</p>
 
+      <h1>The Python programming language</h1>
+
+      <h2>Assignment of mutable vs immutable objects</h2>
+
+      <p>Two assignments to literals that represent immutable objects of equal value will point to the same
+        object. However, two assignments to literals that represent mutable objects of equal value will point to two
+        different objects. For example:</p>
+
+      <pre><code>>>> a = "Hello"
+>>> b = "Hello"
+>>> a == b
+True
+>>> id(a) == id(b)
+True
+
+>>> a = ["Hello"]
+>>> b = ["Hello"]
+>>> a == b
+True
+>>> id(a) == id(b)
+False</pre></code>
+
     </main>
 
     <footer>
