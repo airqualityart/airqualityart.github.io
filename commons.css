@@ -1,0 +1,61 @@
+/* CSS for AQart's home page (common resources).
+
+   Copyright (c) 2023-now Air Quality And Related Topics.
+
+   This work is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license (CC
+   BY-SA 4.0). The full text of this license can be found at https://creativecommons.org/licenses/by-sa/4.0/.
+
+*/
+
+/* ----------------- */
+/* Overal formatting */
+/* ----------------- */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 900px;
+    margin: 0px auto;
+}
+
+body, p {
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+}
+
+header, h1, h2, h3 {
+    font-family: serif;
+}
+
+.clearfix {
+    content: "",
+    clear: both;
+    display: table;
+}
+
+noscript {
+    display: block;
+    padding: 10px;
+    color: red;
+    font-size: 200%;
+    text-align: center;
+}
+
+header, footer {
+    margin: 20px auto;
+    text-align: center;
+    background-color: cornsilk;
+    border: 2px solid crimson;
+    border-radius: 20px;
+}
+
+header {
+    padding: 30px 0;
+    font-size: 2.5em;
+    color: crimson;
+}
+
+footer {
+    padding: 5px 0;
+}
