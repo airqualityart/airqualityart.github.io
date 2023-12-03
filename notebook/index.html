@@ -30,9 +30,10 @@
 
       <h1>The C programming language</h1>
 
-      <p>Unless otherwise specified, these notes have been taken upon reading Kernighan B, W and D. M. Ritchie. <cite>Le
-        langage C, Norme ANSI.</cite>, 2nd edition. Translated into French (original title: <cite>The C programming
-        language</cite>) by J.-F. Groff and E. Mottier. Masson, Paris and Prentice Hall, London, 1997.</p>
+      <p>Unless otherwise specified on a case by case basis, these notes have been taken upon reading Kernighan B, W and
+        D. M. Ritchie. <cite>Le langage C, Norme ANSI.</cite>, 2nd edition. Translated into French (original
+        title: <cite>The C programming language</cite>) by J.-F. Groff and E. Mottier. Masson, Paris and Prentice Hall,
+        London, 1997.</p>
 
       <h2>Variable types</h2>
 
@@ -124,6 +125,75 @@ printf("%d %d", ++n, n*n)</code></pre>
 
       <p>In a switch/case statement, use break at the end of each clause to make sure that no other clause is
       executed. Otherwise, several clauses may be executed.</p>
+
+      <h1>The HTML markup language</h1>
+
+      <h2>Useful bindings in Emacs' HTML+ mode:</h2>
+
+      <table>
+        <tr><th>Action</th><th>Binding</th></tr>
+        <tr><td>Open new tag</td><td>C-c C-o</td></tr>
+        <tr><td>Close currently open tag</td><td>C-c C-e</td></tr>
+        <tr><td>New paragraph</td><td>C-c RET</td></tr>
+        <tr><td>New header (h1, h2, etc.)</td><td>C-c C-1, 2, etc.</td></tr>
+        <tr><td>Delete tag (not its content)</td><td>C-c C-d</td></tr>
+        <tr><td>Create (un)ordered list</td><td>C-c C-c u or o</td></tr>
+        <tr><td>Open current buffer in web browser</td><td>C-c C-v</td></tr>
+      </table>
+
+      <h1>The JavaScript programming language</h1>
+
+      <p>Unless otherwise specified on a case by case basis, these notes have been taken upon reading <cite>Eloquent
+      JavaScript, A Modern Introduction to Programming</cite>, second edition, by Marijn Haverbeke, No Starch Press, San
+      Francisco, 2015.</p>
+
+      <h2>Basic data types</h2>
+
+      <ul>
+        <li>Numbers (special values: Infinity, -Infinity, NaN)</li>
+        <li>Strings</li>
+        <li>Booleans (true and false, in lower case)</li>
+        <li>Objects</li>
+        <li>Functions</li>
+        <li>Undefined values: null and undefined</li>
+      </ul>
+
+      <h2>Tricky logical expressions</h2>
+
+      <p>Convertions to booleans: the values 0, NaN, and "" are converted to false. Everything else is converted to
+      true.</p>
+
+      <p>The logical expression (null == undefined) evaluates to true.</p>
+
+      <p>(exp1 || epx2) and (exp1 &amp;&amp; exp2) evaluate to either exp1 or exp2 (not true or false), so they might
+        not evaluate to boolean values. For example, (false || "hello") evaluates to "hello".</p>
+
+      <p>The operators === and !== check whether types and values are equal (i.e. they do not do type coercion before
+        the comparison), whereas == and != do do type coercion.</p>
+
+      <h2>Other tricky things</h2>
+
+      <p>Be careful with surprising implicit type coercions, for example:</p>
+
+      <ul>
+        <li>10 * null evaluates to 0 (null is coerced to 0). However, (null == 0) evaluates to false.</li>
+        <li>"10" - 1 evaluates to 9 ("10" is coerced to a number).</li>
+        <li>"10" + 1 evaluates to "101" (1 coerced to a string).</li>
+      </ul>
+
+      <p>Uninitialized variables have the value undefined.</p>
+
+      <p>Accessing a property that does not exist in an object is not an error, it yields an undefined value.</p>
+
+      <p>In a function, a return statement without a value returns undefined.</p>
+
+      <p>Calling a function with the wrong number of arguments creates no error. Extra arguments are ignored and missing
+        ones are set to undefined.</p>
+
+      <p>Similarly to C, a break statement is needed at the end of each clause in a switch/case statement.</p>
+
+      <p>In a block, "let" creates a variable that is local to the block, whereas var does not create a new variable if
+        it already exists in the parent block</p>
 
       <h1>The Python programming language</h1>
 
