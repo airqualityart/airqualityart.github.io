@@ -1,0 +1,45 @@
+/* CSS for AQart's differential equations numerical solver (common resources).
+
+   Copyright (c) 2023-now Air Quality And Related Topics.
+
+   This work is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license (CC
+   BY-SA 4.0). The full text of this license can be found at https://creativecommons.org/licenses/by-sa/4.0/.
+
+*/
+
+/*------------------*/
+/* Variables picker */
+/*------------------*/
+
+div.varpick {
+    text-align: center;
+}
+
+div.varpick > div {
+    display: inline-block;
+    padding: 5px;
+}
+
+div.varpick > div > div {
+    display: inline-block;
+}
+
+div.varpick button  {
+    border: none;
+}
+
+div.varpick > div, div.varpick button  {
+    background-color: var(--color-fg-hard);
+    color: var(--color-bg-medium);
+    border-radius: 10px;
+}
+
+div.varpick > div > div, div.varpick button {
+    padding: 5px 10px;
+    font-size: 200%;
+}
+
+div.varpick button:hover {
+    background-color: var(--color-bg-medium);
+    color: var(--color-fg-hard);
+}
