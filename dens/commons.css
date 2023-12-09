@@ -7,6 +7,54 @@
 
 */
 
+/*---------------*/
+/* Letter picker */
+/*---------------*/
+
+#letterpicker {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: black;
+    color: white;
+    opacity: 0.9;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#letterpicker > div {
+    margin: 20px 0;
+    text-align: center;
+}
+
+#letterpicker button {
+    margin: 2px 2px;
+    width: 50px;
+    height: 50px;
+    font-size: 175%;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    opacity: 1;
+}
+
+#letterpicker button.active {
+    background-color: var(--color-bg-hard);
+    color: var(--color-bg-medium);
+    border: 1px solid var(--color-bg-medium);
+}
+
+#letterpicker button:hover {
+    background-color: var(--color-fg-hard);
+    color: var(--color-bg-medium);
+    border: 1px solid var(--color-bg-medium);
+}
+
 /*------------------*/
 /* Variables picker */
 /*------------------*/
@@ -17,7 +65,7 @@ div.varpick {
 
 div.varpick > div {
     display: inline-block;
-    padding: 5px;
+    padding: 5px 20px;
 }
 
 div.varpick > div > div {
@@ -35,7 +83,7 @@ div.varpick > div, div.varpick button  {
 }
 
 div.varpick > div > div, div.varpick button {
-    padding: 5px 10px;
+    padding: 5px 3px;
     font-size: 200%;
 }
 

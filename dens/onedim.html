@@ -38,6 +38,10 @@
       <div><a href="../notebook/index.html">Notebook</a></div>
     </nav>
 
+    <noscript>
+      This website needs JavaScript to function properly, but it seems to be deactivated in your browser...
+    </noscript>
+
     <main>
 
       <p>Welcome to the numerical solver for one-dimentional equations. This solver is dedicated to ordinary
@@ -45,15 +49,16 @@
 
       <p>This site is obviously under construction.</p>
 
-      <p>Start by choosing the names of your dependant and independant variables:</p>
+      <p>Start by choosing the names of your dependent and independent variables:</p>
 
       <div class="varpick"><div>
-        <button>y</button><div>(</div><button>t</button><div>)</div>
+        <button id="depvarpicker" onclick="LetterPicker(this)">y</button>
+        <div>(</div><button id="indvarpicker" onclick="LetterPicker(this)">t</button><div>)</div>
       </div></div>
 
-      <p>(this is purely for aesthetic purposes; it has not effect on the solution)</p>
-
     </main>
+
+    <div id="letterpicker"></div>
 
     <footer>
       <p>Copyright &copy; 2023-now Air Quality And Related Topics.</p>
@@ -61,6 +66,8 @@
         (CC BY-SA 4.0). The full text of this license can be
         found <a href="https://creativecommons.org/licenses/by-sa/4.0/">here</a>.</p>
     </footer>
+
+    <script src="./commons.js"></script>
 
   </body>
 
