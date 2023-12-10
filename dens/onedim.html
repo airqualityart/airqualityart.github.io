@@ -60,11 +60,90 @@
 
       <div id="orderpick"><button id="orderpicker" onclick="OrderPicker(this)">1<sup>st</sup> order</button></div>
 
+      <p>Finally, fill out the form:</p>
+
+      <div id="formbuttoncontainer"><button id="formbutton" onclick="OpenForm()">Open form</button></div>
+
     </main>
 
     <div id="shadedbackground"></div>
 
     <div id="characterpicker"></div>
+
+    <div id="odeform">
+      <div>
+
+        <div id="odeform_indmin_labelinput" class="labelinput">
+          <label id="odeform_indmin_label" for="odeform_indmin"></label>
+          <input type="text" id="odeform_indmin" name="independent variable minimum value">
+        </div>
+
+        <div id="odeform_indmax_labelinput"  class="labelinput">
+          <label id="odeform_indmax_label" for="odeform_indmax"></label>
+          <input type="test" id="odeform_indmax" name="independent variable maximum value">
+        </div>
+
+        <div id="odeform_nsteps_labelinput"  class="labelinput">
+          <label id="odeform_nsteps_label" for="odeform_nsteps">Number of steps =</label>
+          <input type="text" id="odeform_nsteps" name="number of integration steps">
+        </div>
+
+        <div id="odeform_eq_labelinput"  class="labelinput">
+          <label id="odeform_eq_label" for="odeform_eq"></label>
+          <input type="text" id="odeform_eq" name="equation">
+        </div>
+
+        <div id="odeform_ic0_labelinput" class="labelinput">
+          <label id="odeform_ic0_label" for="odeform_ic0"></label>
+          <input type="text" id="odeform_ic0" name="initial condition of function">
+        </div>
+
+        <div id="odeform_ic1_labelinput" class="labelinput">
+          <label id="odeform_ic1_label" for="odeform_ic1"></label>
+          <input type="text" id="odeform_ic1" name="initial condition of first derivative">
+        </div>
+
+        <div id="odeform_ic2_labelinput" class="labelinput">
+          <label  id="odeform_ic2_label" for="odeform_ic2"></label>
+          <input type="text" id="odeform_ic2" name="initial condition of second derivative">
+        </div>
+
+        <div id="odeform_ic3_labelinput" class="labelinput">
+          <label  id="odeform_ic3_label" for="odeform_ic3"></label>
+          <input type="text" id="odeform_ic3" name="initial condition of third derivative">
+        </div>
+
+        <div id="odeform_ic4_labelinput" class="labelinput">
+          <label  id="odeform_ic4_label" for="odeform_ic4"></label>
+          <input type="text" id="odeform_ic4" name="initial condition of fourth derivative">
+        </div>
+
+        <div id="odeform_ic5_labelinput" class="labelinput">
+          <label  id="odeform_ic5_label" for="odeform_ic5"></label>
+          <input type="text" id="odeform_ic5" name="initial condition of fifth derivative">
+        </div>
+
+        <div id="odeform_ic6_labelinput" class="labelinput">
+          <label  id="odeform_ic6_label" for="odeform_ic6"></label>
+          <input type="text" id="odeform_ic6" name="initial condition of sixth derivative">
+        </div>
+
+        <div id="odeform_ic7_labelinput" class="labelinput">
+          <label  id="odeform_ic7_label" for="odeform_ic7"></label>
+          <input type="text" id="odeform_ic7" name="initial condition of seventh derivative">
+        </div>
+
+        <div id="odeform_ic8_labelinput" class="labelinput">
+          <label  id="odeform_ic8_label" for="odeform_ic8"></label>
+          <input type="text" id="odeform_ic8" name="initial condition of eigth derivative">
+        </div>
+
+        <div>
+          <button onclick="OnFormSubmit()">Done</button>
+        </div>
+
+      </div>
+    </div>
 
     <footer>
       <p>Copyright &copy; 2023-now Air Quality And Related Topics.</p>

@@ -6,6 +6,8 @@
 // text of this license can be found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be found in the
 // file named LICENSE.md located at the root of this repository.
 
+let MAX_ORDER = 9;
+
 function Tagify(s, tag, attributes) {
     // Return string s wrapped around given tag with given attributes.
     let out = "<" + tag;
@@ -38,10 +40,16 @@ function LetterPicker(caller) {
     CharacterPicker([letters, letters.toUpperCase()], caller, "OnLetterPickerSelected", current);
 }
 
+function GetEquationOrder() {
+    // Return the current equation order.
+    return Number(document.getElementById("orderpicker").innerHTML[0]);
+}
+
 function OrderPicker(caller) {
     // Create and show the order-picking window.
-    const current = document.getElementById(caller.id).innerHTML[0];
-    CharacterPicker(["123456789"], caller, "OnOrderPickerSelected", current);
+    let numbers = "";
+    for (let i = 0; i < MAX_ORDER; i++) numbers += (i+1);
+    CharacterPicker([numbers], caller, "OnOrderPickerSelected", GetEquationOrder().toString());
 }
 
 function OnLetterPickerSelected(letter, id) {
@@ -58,7 +66,34 @@ function OnOrderPickerSelected(order, id) {
         s = "st";
     else if (order == "2")
         s = "nd";
+    else if (order == "3")
+        s = "rd";
     document.getElementById(id).innerHTML = order + Tagify(s, "sup") + " order";
     document.getElementById("characterpicker").style.display = "none";
+    document.getElementById("shadedbackground").style.display = "none";
+}
+
+function OpenForm() {
+    // Modify the form according to user choices and display it.
+    const ind = document.getElementById("indvarpicker").innerHTML;
+    const dep = document.getElementById("depvarpicker").innerHTML;
+    const order = GetEquationOrder();
+    let primes = [""];
+    for (let i = 0; i < MAX_ORDER; i++) primes.push(primes[primes.length-1] + "'");
+    document.getElementById("odeform_indmin_label").innerHTML = ind + Tagify("min", "sub") + " =";
+    document.getElementById("odeform_indmax_label").innerHTML = ind + Tagify("max", "sub") + " =";
+    document.getElementById("odeform_eq_label").innerHTML = dep + primes[order] + " =";
+    for (i = 0; i < MAX_ORDER; i++) {
+        var id = "odeform_ic" + i + "_label";
+        document.getElementById(id).innerHTML = dep + primes[i] + "(" + ind + Tagify("min", "sub") + ") =";
+        document.getElementById(id + "input").style.display = (i < order) ? "block" : "none";
+    }
+    document.getElementById("shadedbackground").style.display = "block";
+    document.getElementById("odeform").style.display = "flex";
+}
+
+function OnFormSubmit() {
+    // Actions taken when the user submits the form.
+    document.getElementById("odeform").style.display = "none";
     document.getElementById("shadedbackground").style.display = "none";
 }
