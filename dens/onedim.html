@@ -49,16 +49,22 @@
 
       <p>This site is obviously under construction.</p>
 
-      <p>Start by choosing the names of your dependent and independent variables:</p>
+      <p>Start by choosing the names of your dependent and independent variables (click on the letters):</p>
 
-      <div class="varpick"><div>
+      <div id="varpick"><div>
         <button id="depvarpicker" onclick="LetterPicker(this)">y</button>
         <div>(</div><button id="indvarpicker" onclick="LetterPicker(this)">t</button><div>)</div>
       </div></div>
 
+      <p>Then choose the order of the ordinary differential equation:</p>
+
+      <div id="orderpick"><button id="orderpicker" onclick="OrderPicker(this)">1<sup>st</sup> order</button></div>
+
     </main>
 
-    <div id="letterpicker"></div>
+    <div id="shadedbackground"></div>
+
+    <div id="characterpicker"></div>
 
     <footer>
       <p>Copyright &copy; 2023-now Air Quality And Related Topics.</p>
