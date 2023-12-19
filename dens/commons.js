@@ -8,13 +8,6 @@
 
 let MAX_ORDER = 9;
 
-function Tagify(s, tag, attributes) {
-    // Return string s wrapped around given tag with given attributes.
-    let out = "<" + tag;
-    for (var name in attributes) out += " " + name + '="' + attributes[name] + '"';
-    return out + ">" + s + "</" + tag + ">";
-}
-
 function CharacterPicker(characters, caller, callback, current) {
     // Create and show a character-picking window.
     let content = "";

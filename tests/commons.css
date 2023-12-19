@@ -1,0 +1,46 @@
+/* CSS for AQart's web page's test-driven programming section.
+
+   Copyright (c) 2023-now Air Quality And Related Topics.
+
+   This work is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license (CC
+   BY-SA 4.0). The full text of this license can be found at https://creativecommons.org/licenses/by-sa/4.0/.
+
+*/
+
+:root {
+    --color-fg-passed: darkseagreen;
+    --color-bg-passed: none;
+    --color-fg-notpassed: orangered;
+    --color-bg-notpassed: none;
+}
+
+.passed, .notpassed {
+    margin: 10px 0;
+    padding: 10px;
+    border: 3px solid;
+    border-radius: 10px;
+}
+
+.passed > div, .notpassed > div {
+    margin: 5px 0;
+}
+
+.passed {
+    background-color: var(--color-bg-passed);
+    border-color: var(--color-fg-passed);
+}
+
+.passed > div:last-child {
+    font-weight: bold;
+    color: var(--color-fg-passed);
+}
+
+.notpassed {
+    background-color: var(--color-bg-notpassed);
+    border-color: var(--color-fg-notpassed);
+}
+
+.notpassed > div:last-child {
+    font-weight: bold;
+    color: var(--color-fg-notpassed);
+}
