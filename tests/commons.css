@@ -64,3 +64,13 @@
     color: var(--color-bg-medium);
     border-color: var(--color-bg-medium);
 }
+
+#testssummary.allgood {
+    font-weight: bold;
+    color: var(--color-fg-passed);
+}
+
+#testssummary.notallgood {
+    font-weight: bold;
+    color: var(--color-fg-notpassed);
+}

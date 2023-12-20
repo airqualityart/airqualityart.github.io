@@ -77,3 +77,5 @@ TestFunction(
     ["hello( world", 5],
     null,
     "IndexMatchingCharacter_null_4");
+
+DisplayNumberOFPassedTests();
