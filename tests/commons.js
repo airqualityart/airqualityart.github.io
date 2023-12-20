@@ -3,8 +3,8 @@
 // Copyright (c) 2023-now Air Quality And Related Topics.
 //
 // This code is licensed under the terms of the 3-clause BSD license (also known as the modified BSD license). The full
-// text of this license can be found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be found in the
-// file named LICENSE.md located at the root of this repository.
+// text of this license can be found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be found in
+// the file named LICENSE.md located at the root of this repository.
 
 function TestFunction(f, args, answer, id) {
     // Test function f and write results in container that has given id.
@@ -22,4 +22,16 @@ function TestFunction(f, args, answer, id) {
     }
     const attributes = {class: "testresult " + (ok ? "passed" : "notpassed")};
     document.getElementById(id).innerHTML = Tagify(content, "div", attributes);
+}
+
+function ToggleShowPassedTests(button) {
+    // Toggle showing/hiding tests that passed.
+    const hide = (button.innerHTML == "Hide passed tests");
+    const display = hide ? "none" : "block";
+    const text = (hide ? "Show" : "Hide") + " passed tests";
+    for (let test of document.getElementsByClassName("testresult")) {
+        if (test.className.split(" ").indexOf("passed") < 0) continue;
+        test.style.display = display;
+        button.innerHTML = text;
+    }
 }

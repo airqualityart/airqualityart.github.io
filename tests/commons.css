@@ -44,3 +44,23 @@
     font-weight: bold;
     color: var(--color-fg-notpassed);
 }
+
+#toggleshowpassed {
+    text-align: center;
+}
+
+#toggleshowpassed > button {
+    padding: 10px 20px;
+    font-size: 125%;
+    background-color: var(--color-fg-hard);
+    color: var(--color-bg-medium);
+    border: 1px solid;
+    border-color: var(--color-fg-hard);
+    border-radius: 10px;
+}
+
+#toggleshowpassed > button:hover {
+    background-color: var(--color-bg-hard);
+    color: var(--color-bg-medium);
+    border-color: var(--color-bg-medium);
+}
