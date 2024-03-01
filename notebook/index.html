@@ -234,6 +234,20 @@ True
 >>> id(a) == id(b)
 False</pre></code>
 
+      <h1>Git (version control)</h1>
+
+      <h2>Branches and remotes</h2>
+
+      There is a branch on a remote but this branch does not exist locally, and I want it locally:
+
+      <pre><code>git fetch $remote_name
+git branch $local_branch_name $remote_name/$remote_branch_name</pre></code>
+
+      There is a local branch which does not exist on the remote, and I want it on the remote:
+
+      <pre><code>git checkout $local_branch_name
+git push [-u] $remote_name $remote_branch_name</pre></code>
+
     </main>
 
     <footer>
