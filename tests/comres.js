@@ -3,8 +3,10 @@
 // Copyright (c) 2023-now Air Quality And Related Topics.
 //
 // This code is licensed under the terms of the 3-clause BSD license (also known as the modified BSD license). The full
-// text of this license can be found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be found in the
-// file named LICENSE.md located at the root of this repository.
+// text of this license can be found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be found in
+// the file named LICENSE.md located at the root of this repository.
+
+// IndexMatchingCharacter
 
 TestFunction(
     IndexMatchingCharacter,
@@ -77,5 +79,61 @@ TestFunction(
     ["hello( world", 5],
     null,
     "IndexMatchingCharacter_null_4");
+
+// SimplifyMathString
+
+TestFunction(
+    SimplifyMathString,
+    ["  some white space around  "],
+    "some white space around",
+    "SimplifyMathString_simple_1");
+
+TestFunction(
+    SimplifyMathString,
+    ["(1 + 1)"],
+    "1 + 1",
+    "SimplifyMathString_simple_2");
+
+TestFunction(
+    SimplifyMathString,
+    ["( 2 + 2 )"],
+    "2 + 2",
+    "SimplifyMathString_simple_3");
+
+TestFunction(
+    SimplifyMathString,
+    ["( [1 + 2] )"],
+    "1 + 2",
+    "SimplifyMathString_complex_1");
+
+TestFunction(
+    SimplifyMathString,
+    ["nothing to simplify here"],
+    "nothing to simplify here",
+    "SimplifyMathString_nothing_1");
+
+TestFunction(
+    SimplifyMathString,
+    ["(nothing to simplify here"],
+    "(nothing to simplify here",
+    "SimplifyMathString_nothing_2");
+
+TestFunction(
+    SimplifyMathString,
+    ["("],
+    "(",
+    "SimplifyMathString_nothing_3");
+
+TestFunction(
+    SimplifyMathString,
+    [""],
+    "",
+    "SimplifyMathString_nothing_4");
+
+TestFunction(
+    SimplifyMathString,
+    ["(1+1) + (2*3)"],
+    "(1+1) + (2*3)",
+    "SimplifyMathString_nothing_5");
 
 DisplayNumberOFPassedTests();
