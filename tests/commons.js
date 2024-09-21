@@ -9,24 +9,55 @@
 let n_tests_total = 0;
 let n_tests_passed = 0;
 
-function TestFunction(f, args, answer, id) {
-    // Test function f and write results in container that has given id.
+function ShowTestResult(args, result, answer, header, id, tol) {
+    // Show the result of a test.
+    //
+    // Argument "tol" is optional and defines a numerical tolerance for comparison of floating-point numbers.
+    //
     n_tests_total += 1;
-    let content = "";
-    for (let i = 0; i < args.length; i++)
-        content += Tagify("Argument " + (i+1) + " (" + (typeof args[i]) + ") = " + args[i], "div");
+    let content = header;
+    if (args.length == 0)
+        content += Tagify("No arguments", "div");
+    else
+        for (let i = 0; i < args.length; i++)
+            content += Tagify("Argument " + (i+1) + " (" + (typeof args[i]) + ") = " + args[i], "div");
     content += Tagify("Expected answer (" + (typeof answer) + ") = " + answer, "div");
-    const test = f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
-    const ok = (test === answer);
+    if (tol === undefined)
+        var ok = (result === answer);
+    else {
+        var ok = (Math.abs(result - answer) <= tol);
+        content += Tagify("Tolerance = " + tol, "div");
+    }
     if (ok) {
         n_tests_passed += 1;
         content += Tagify("Test passed", "div");
     } else {
-        content += Tagify("Got answer (" + (typeof test) + ") = " + test, "div");
+        content += Tagify("Got answer (" + (typeof result) + ") = " + result, "div");
         content += Tagify("Test NOT passed", "div");
     }
     const attributes = {class: "testresult " + (ok ? "passed" : "notpassed")};
     document.getElementById(id).innerHTML = Tagify(content, "div", attributes);
+}
+
+function TestFunction(f, args, answer, id, tol) {
+    // Test function f with given arguments and write results in container that has given id.
+    //
+    // Argument "tol" is optional and defines a numerical tolerance for comparison of floating-point numbers.
+    //
+    const result = f(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9],
+                     args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18]);
+    ShowTestResult(args, result, answer, "", id, tol);
+}
+
+function TestObjectMethod(obj, method, args, answer, id, tol) {
+    // Test method of object with given arguments and write results in container that has given id.
+    //
+    // Argument "tol" is optional and defines a numerical tolerance for comparison of floating-point numbers.
+    //
+    const header = Tagify("Object: " + obj, "div") + Tagify("Method: " + method, "div");
+    const result = obj[method](args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
+                               args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
+    ShowTestResult(args, result, answer, header, id, tol);
 }
 
 function ToggleShowPassedTests(button) {

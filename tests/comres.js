@@ -136,4 +136,170 @@ TestFunction(
     "(1+1) + (2*3)",
     "SimplifyMathString_nothing_5");
 
+// MathOperation
+
+TestObjectMethod(
+    new MathOperation("number", 125),
+    "eval",
+    [],
+    125,
+    "MathOperation.eval_number_1"
+)
+
+TestObjectMethod(
+    new MathOperation("+", 2, 2),
+    "eval",
+    [],
+    4,
+    "MathOperation.eval_add_1"
+)
+
+TestObjectMethod(
+    new MathOperation("-", 2, 5),
+    "eval",
+    [],
+    -3,
+    "MathOperation.eval_sub_1"
+)
+
+TestObjectMethod(
+    new MathOperation("*", 7, 5),
+    "eval",
+    [],
+    35,
+    "MathOperation.eval_mul_1"
+)
+
+TestObjectMethod(
+    new MathOperation("*", 7, -5),
+    "eval",
+    [],
+    -35,
+    "MathOperation.eval_mul_2"
+)
+
+TestObjectMethod(
+    new MathOperation("/", 18, 6),
+    "eval",
+    [],
+    3,
+    "MathOperation.eval_div_1"
+)
+
+TestObjectMethod(
+    new MathOperation("^", 2, 5),
+    "eval",
+    [],
+    32,
+    "MathOperation.eval_pow_1"
+)
+
+TestObjectMethod(
+    new MathOperation("^", 49, 0.5),
+    "eval",
+    [],
+    7,
+    "MathOperation.eval_pow_2"
+)
+
+TestObjectMethod(
+    new MathOperation("sqrt", 49, null),
+    "eval",
+    [],
+    7,
+    "MathOperation.eval_sqrt_1"
+)
+
+TestObjectMethod(
+    new MathOperation("sin", 0, null),
+    "eval",
+    [],
+    0,
+    "MathOperation.eval_sin_1"
+)
+
+TestObjectMethod(
+    new MathOperation("sin", Math.PI/2, null),
+    "eval",
+    [],
+    1,
+    "MathOperation.eval_sin_2"
+)
+
+TestObjectMethod(
+    new MathOperation("sin", Math.PI/6, null),
+    "eval",
+    [],
+    0.5,
+    "MathOperation.eval_sin_3",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathOperation("sin", Math.PI/3, null),
+    "eval",
+    [],
+    Math.sqrt(3)/2,
+    "MathOperation.eval_sin_4",
+)
+
+TestObjectMethod(
+    new MathOperation("cos", 0, null),
+    "eval",
+    [],
+    1,
+    "MathOperation.eval_cos_1"
+)
+
+TestObjectMethod(
+    new MathOperation("cos", Math.PI/2, null),
+    "eval",
+    [],
+    0,
+    "MathOperation.eval_cos_2",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathOperation("cos", Math.PI/6, null),
+    "eval",
+    [],
+    Math.sqrt(3)/2,
+    "MathOperation.eval_cos_3",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathOperation("cos", Math.PI/3, null),
+    "eval",
+    [],
+    0.5,
+    "MathOperation.eval_cos_4",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathOperation("exp", 0, null),
+    "eval",
+    [],
+    1,
+    "MathOperation.eval_exp_1",
+)
+
+TestObjectMethod(
+    new MathOperation("exp", 10, null),
+    "eval",
+    [],
+    Math.exp(10),
+    "MathOperation.eval_exp_2",
+)
+
+TestObjectMethod(
+    new MathOperation("exp", -10, null),
+    "eval",
+    [],
+    Math.exp(-10),
+    "MathOperation.eval_exp_3",
+)
+
 DisplayNumberOFPassedTests();

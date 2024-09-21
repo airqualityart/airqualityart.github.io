@@ -44,3 +44,39 @@ function SimplifyMathString(s) {
         s = s.substring(1, s.length-1).trim();
     return s;
 }
+
+let MATH_OPERATIONS = {};
+MATH_OPERATIONS["number"] = function (left, right) {return left;};
+MATH_OPERATIONS["+"] = function (left, right) {return left + right;};
+MATH_OPERATIONS["-"] = function (left, right) {return left - right;};
+MATH_OPERATIONS["*"] = function (left, right) {return left * right;};
+MATH_OPERATIONS["/"] = function (left, right) {return left / right;};
+MATH_OPERATIONS["^"] = function (left, right) {return Math.pow(left, right);};
+MATH_OPERATIONS["sqrt"] = function (left, right) {return Math.sqrt(left);};
+MATH_OPERATIONS["sin"] = function (left, right) {return Math.sin(left);};
+MATH_OPERATIONS["cos"] = function (left, right) {return Math.cos(left);};
+MATH_OPERATIONS["exp"] = function (left, right) {return Math.exp(left);};
+
+function MathOperation(type, left, right) {
+    // Constructor for MathOperation instances.
+    this.type = type;
+    this.left = left;
+    this.right = right;
+}
+
+MathOperation.prototype.eval = function() {
+    // Return the numerical value of the result of the operation.
+    return MATH_OPERATIONS[this.type](this.left, this.right);
+}
+
+MathOperation.prototype.toString = function() {
+    // Return the string representation of MathOperation instance.
+    let answer = "MathOperation: "
+    if (this.type == "number")
+        answer += "the number " + this.left;
+    else if (["sqrt", "sin", "cos", "exp"].includes(this.type))
+        answer += this.type + "(" + this.left + ")";
+    else
+        answer += this.left + " " + this.type + " " + this.right;
+    return answer;
+}
