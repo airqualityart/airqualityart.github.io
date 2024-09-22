@@ -136,7 +136,169 @@ TestFunction(
     "(1+1) + (2*3)",
     "SimplifyMathString_nothing_5");
 
-// MathOperation
+// MathOperation.unary and MathOperation.binary
+
+TestObjectMethod(
+    new MathOperation("number", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_number"
+)
+
+TestObjectMethod(
+    new MathOperation("number", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_number"
+)
+
+TestObjectMethod(
+    new MathOperation("+", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_add"
+)
+
+TestObjectMethod(
+    new MathOperation("+", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_add"
+)
+
+TestObjectMethod(
+    new MathOperation("-", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_sub"
+)
+
+TestObjectMethod(
+    new MathOperation("-", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_sub"
+)
+
+TestObjectMethod(
+    new MathOperation("*", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_mul"
+)
+
+TestObjectMethod(
+    new MathOperation("*", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_mul"
+)
+
+TestObjectMethod(
+    new MathOperation("/", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_div"
+)
+
+TestObjectMethod(
+    new MathOperation("/", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_div"
+)
+
+TestObjectMethod(
+    new MathOperation("^", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_pow"
+)
+
+TestObjectMethod(
+    new MathOperation("^", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_pow"
+)
+
+TestObjectMethod(
+    new MathOperation("sqrt", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_sqrt"
+)
+
+TestObjectMethod(
+    new MathOperation("sqrt", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_sqrt"
+)
+
+TestObjectMethod(
+    new MathOperation("sin", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_sin"
+)
+
+TestObjectMethod(
+    new MathOperation("sin", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_sin"
+)
+
+TestObjectMethod(
+    new MathOperation("cos", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_cos"
+)
+
+TestObjectMethod(
+    new MathOperation("cos", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_cos"
+)
+
+TestObjectMethod(
+    new MathOperation("exp", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_exp"
+)
+
+TestObjectMethod(
+    new MathOperation("exp", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_exp"
+)
+
+// MathOperation.eval
 
 TestObjectMethod(
     new MathOperation("number", 125),
@@ -300,6 +462,39 @@ TestObjectMethod(
     [],
     Math.exp(-10),
     "MathOperation.eval_exp_3",
+)
+
+TestObjectMethod(
+    new MathOperation("+", 2, new MathOperation("-", 10, 4)),
+    "eval",
+    [],
+    8,
+    "MathOperation.eval_nested_1",
+)
+
+TestObjectMethod(
+    new MathOperation("*", new MathOperation("+", -3, 7), new MathOperation("-", 10, 4)),
+    "eval",
+    [],
+    24,
+    "MathOperation.eval_nested_2",
+)
+
+TestObjectMethod(
+    new MathOperation("cos", new MathOperation("/", Math.PI, 3)),
+    "eval",
+    [],
+    0.5,
+    "MathOperation.eval_nested_3",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathOperation("+", new MathOperation("*", new MathOperation("cos", Math.PI/3), 10), 4),
+    "eval",
+    [],
+    9,
+    "MathOperation.eval_nested_4",
 )
 
 DisplayNumberOFPassedTests();

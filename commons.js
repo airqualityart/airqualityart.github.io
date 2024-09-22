@@ -64,19 +64,46 @@ function MathOperation(type, left, right) {
     this.right = right;
 }
 
+MathOperation.prototype.unary = function() {
+    // Return true if and only if this instance represents a unary operation.
+    return ((this.type == "number") || (this.type == "sqrt") || (this.type == "sin") ||
+            (this.type == "cos") || (this.type == "exp"));
+}
+
+MathOperation.prototype.binary = function() {
+    // Return true if and only if this instance represents a binary operation.
+    return ! this.unary();
+}
+
 MathOperation.prototype.eval = function() {
     // Return the numerical value of the result of the operation.
-    return MATH_OPERATIONS[this.type](this.left, this.right);
+    if (this.left instanceof MathOperation)
+        var left = this.left.eval();
+    else
+        var left = this.left;
+    if (this.binary() && this.right instanceof MathOperation)
+        var right = this.right.eval();
+    else
+        var right = this.right;
+    return MATH_OPERATIONS[this.type](left, right);
 }
 
 MathOperation.prototype.toString = function() {
     // Return the string representation of MathOperation instance.
     let answer = "MathOperation: "
-    if (this.type == "number")
-        answer += "the number " + this.left;
-    else if (["sqrt", "sin", "cos", "exp"].includes(this.type))
-        answer += this.type + "(" + this.left + ")";
+    if (this.left instanceof MathOperation)
+        var left = "(" + this.left + ")";
     else
-        answer += this.left + " " + this.type + " " + this.right;
+        var left = this.left;
+    if (this.binary() && this.right instanceof MathOperation)
+        var right = "(" + this.right + ")";
+    else
+        var right = this.right;
+    if (this.type == "number")
+        answer += "the number " + left;
+    else if (["sqrt", "sin", "cos", "exp"].includes(this.type))
+        answer += this.type + "(" + left + ")";
+    else
+        answer += left + " " + this.type + " " + right;
     return answer;
 }
