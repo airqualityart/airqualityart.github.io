@@ -238,15 +238,67 @@ False</pre></code>
 
       <h2>Branches and remotes</h2>
 
-      There is a branch on a remote but this branch does not exist locally, and I want it locally:
+      <p>There is a branch on a remote but this branch does not exist locally, and I want it locally:</p>
 
       <pre><code>git fetch $remote_name
 git branch $local_branch_name $remote_name/$remote_branch_name</pre></code>
 
-      There is a local branch which does not exist on the remote, and I want it on the remote:
+      <p>There is a local branch which does not exist on the remote, and I want it on the remote:</p>
 
       <pre><code>git checkout $local_branch_name
 git push [-u] $remote_name $remote_branch_name</pre></code>
+
+      <h2>Miscellaneous</h2>
+
+      <p>Definitively and irreversibly remove the last commit (use wisely! or not at all...):</p>
+
+      <pre><code>git reset --hard HEAD^1</pre></code>
+
+      <h1>ImageMagick</h1>
+
+      <p>Remove margins around an image:</p>
+
+      <pre><code>mogrify -trim my-image.png</pre></code>
+
+      <h1>MacOS configuration</h1>
+
+      <h2>Modifier keys</h2>
+
+      Here is how I like to set up my modifier keys on MacOS (System settings &gt; Keyboard &gt; Keyboard Shortcuts
+      &gt; Modifier Keys):
+
+      <img class="screenshot" src="./assets/screenshot_MacOS_modifier-keys.png"
+           alt="Screenshot of my MacOS modifier keys configuration"/>
+
+      <h2>Automator Quick Actions</h2>
+
+      <p>To create custom actions in MacOS, open Automator and create a Quick Action (see examples below). Once your
+      Quick Action is created, you can associate it with a keyboard shortcut in System settings &gt; Keyboard &gt;
+      Keyboard Shortcuts &gt; Services &gt; General.
+
+      <p>Quick actions are saved in <code>~/Library/Services</code>. To go to <code>~/Library</code> in Finder, hold
+      down the Option key while clicking on the "Go" item in the menu bar at the top of the screen.</p>
+
+      <h3>Copy text to clip board</h3>
+
+      I use this type of Quick Action with my email addresses so that I never mistype them:
+
+      <img class="screenshot" src="./assets/screenshot_MacOS_Automator_text-to-clipboard.png"
+           alt="Screenshot of my MacOS Automator Quick Action for copying text to the clip board"/>
+
+      <h3>Edit file in terminal-based text editor</h3>
+
+      <p>This Quick Action allows me to easily edit a text file from Finder (this example uses Emacs):</p>
+
+      <img class="screenshot" src="./assets/screenshot_MacOS_Automator_open-file-with-Emacs.png"
+           alt="Screenshot of my MacOS Automator Quick Action for opening files in Emacs from Finder"/>
+
+      <p>You can find it in Finder's Quick Actions:</p>
+
+      <ul>
+        <li>By right-clicking on one or more files</li>
+        <li>In the bottom right part of the Finder window when using the "columns" view</li>
+      </ul>
 
     </main>
 
