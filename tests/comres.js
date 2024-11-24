@@ -465,6 +465,39 @@ TestObjectMethod(
 )
 
 TestObjectMethod(
+    new MathOperation("variable", "x"),
+    "eval",
+    [{x: 5}],
+    5,
+    "MathOperation.eval_variables_1",
+)
+
+TestObjectMethod(
+    new MathOperation("-", "x", 3),
+    "eval",
+    [{x: 10}],
+    7,
+    "MathOperation.eval_variables_2",
+)
+
+TestObjectMethod(
+    new MathOperation("+", "x", "y"),
+    "eval",
+    [{x: 5, y: 20}],
+    25,
+    "MathOperation.eval_variables_3",
+)
+
+TestObjectMethod(
+    new MathOperation("cos", "theta"),
+    "eval",
+    [{theta: Math.PI/6}],
+    Math.sqrt(3)/2,
+    "MathOperation.eval_variables_4",
+    1e-15,
+)
+
+TestObjectMethod(
     new MathOperation("+", 2, new MathOperation("-", 10, 4)),
     "eval",
     [],
@@ -495,6 +528,14 @@ TestObjectMethod(
     [],
     9,
     "MathOperation.eval_nested_4",
+)
+
+TestObjectMethod(
+    new MathOperation("+", new MathOperation("*", new MathOperation("cos", "angle"), 10), 4),
+    "eval",
+    [{angle: Math.PI/3}],
+    9,
+    "MathOperation.eval_nested_5",
 )
 
 DisplayNumberOFPassedTests();

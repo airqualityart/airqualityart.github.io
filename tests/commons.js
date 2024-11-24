@@ -9,6 +9,17 @@
 let n_tests_total = 0;
 let n_tests_passed = 0;
 
+function PrettyPrint(obj) {
+    // Pretty-print given object.
+    if (typeof obj !== "object")
+        return obj;
+    keys = [];
+    for (key in obj)
+        keys.push(key);
+    strings = keys.sort().map(function (value, index, array) {return value + ": " + PrettyPrint(obj[value])});
+    return "{" + strings.join(", ") + "}";
+}
+
 function ShowTestResult(args, result, answer, header, id, tol) {
     // Show the result of a test.
     //
@@ -20,7 +31,7 @@ function ShowTestResult(args, result, answer, header, id, tol) {
         content += Tagify("No arguments", "div");
     else
         for (let i = 0; i < args.length; i++)
-            content += Tagify("Argument " + (i+1) + " (" + (typeof args[i]) + ") = " + args[i], "div");
+            content += Tagify("Argument " + (i+1) + " (" + (typeof args[i]) + ") = " + PrettyPrint(args[i]), "div");
     content += Tagify("Expected answer (" + (typeof answer) + ") = " + answer, "div");
     if (tol === undefined)
         var ok = (result === answer);

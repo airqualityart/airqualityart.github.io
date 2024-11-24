@@ -59,11 +59,15 @@ MATH_OPERATIONS["exp"] = function (left) {return Math.exp(left);};
 function MathOperation(type, left, right) {
     // Constructor for MathOperation instances.
     this.type = type;
-    if (type != "number") {
+    if (type != "number" && type != "variable") {
         if (typeof left === "number")
             left = new MathOperation("number", left, null);
+        else if (typeof left === "string")
+            left = new MathOperation("variable", left, null);
         if (typeof right === "number")
             right = new MathOperation("number", right, null);
+        else if (typeof right === "string")
+            right = new MathOperation("variable", right, null);
     }
     this.left = left;
     this.right = right;
@@ -80,23 +84,38 @@ MathOperation.prototype.binary = function() {
     return ! this.unary();
 }
 
-MathOperation.prototype.eval = function() {
+MathOperation.prototype.eval = function(variables={}) {
     // Return the numerical value of the result of the operation.
-    if (this.type == "number")
+    switch (this.type) {
+    case "number":
         return this.left;
-    var left = this.left.eval();
-    if (this.binary())
-        var right = this.right.eval();
-    return MATH_OPERATIONS[this.type](left, right);
+    case "variable":
+        return variables[this.left];
+    default:
+        var left = this.left.eval(variables=variables);
+        if (this.binary())
+            var right = this.right.eval(variables=variables);
+        return MATH_OPERATIONS[this.type](left, right);
+    }
+}
+
+MathOperation.prototype.toString_needs_parentheses = function() {
+    // Return true if and only if string representation of object needs parentheses.
+    return this.type != "number" && this.type != "variable" && this.binary();
 }
 
 MathOperation.prototype.toString = function() {
     // Return the string representation of MathOperation instance.
-    if (this.type == "number")
+    switch (this.type) {
+    case "number":
         return this.left;
-    var left = this.left.type == "number" ? this.left : "(" + this.left + ")";
-    if (this.unary())
-        return this.type + "(" + left + ")";
-    var right = this.right.type == "number" ? this.right : "(" + this.right + ")";
-    return left + " " + this.type + " " + right;
+    case "variable":
+        return this.left;
+    default:
+        var left = this.left.toString_needs_parentheses() && !this.unary() ? "(" + this.left + ")" : this.left;
+        if (this.unary())
+            return this.type + "(" + left + ")";
+        var right = this.right.toString_needs_parentheses() ? "(" + this.right + ")" : this.right;
+        return left + " " + this.type + " " + right;
+    }
 }
