@@ -46,20 +46,25 @@ function SimplifyMathString(s) {
 }
 
 let MATH_OPERATIONS = {};
-MATH_OPERATIONS["number"] = function (left, right) {return left;};
 MATH_OPERATIONS["+"] = function (left, right) {return left + right;};
 MATH_OPERATIONS["-"] = function (left, right) {return left - right;};
 MATH_OPERATIONS["*"] = function (left, right) {return left * right;};
 MATH_OPERATIONS["/"] = function (left, right) {return left / right;};
 MATH_OPERATIONS["^"] = function (left, right) {return Math.pow(left, right);};
-MATH_OPERATIONS["sqrt"] = function (left, right) {return Math.sqrt(left);};
-MATH_OPERATIONS["sin"] = function (left, right) {return Math.sin(left);};
-MATH_OPERATIONS["cos"] = function (left, right) {return Math.cos(left);};
-MATH_OPERATIONS["exp"] = function (left, right) {return Math.exp(left);};
+MATH_OPERATIONS["sqrt"] = function (left) {return Math.sqrt(left);};
+MATH_OPERATIONS["sin"] = function (left) {return Math.sin(left);};
+MATH_OPERATIONS["cos"] = function (left) {return Math.cos(left);};
+MATH_OPERATIONS["exp"] = function (left) {return Math.exp(left);};
 
 function MathOperation(type, left, right) {
     // Constructor for MathOperation instances.
     this.type = type;
+    if (type != "number") {
+        if (typeof left === "number")
+            left = new MathOperation("number", left, null);
+        if (typeof right === "number")
+            right = new MathOperation("number", right, null);
+    }
     this.left = left;
     this.right = right;
 }
@@ -77,33 +82,21 @@ MathOperation.prototype.binary = function() {
 
 MathOperation.prototype.eval = function() {
     // Return the numerical value of the result of the operation.
-    if (this.left instanceof MathOperation)
-        var left = this.left.eval();
-    else
-        var left = this.left;
-    if (this.binary() && this.right instanceof MathOperation)
+    if (this.type == "number")
+        return this.left;
+    var left = this.left.eval();
+    if (this.binary())
         var right = this.right.eval();
-    else
-        var right = this.right;
     return MATH_OPERATIONS[this.type](left, right);
 }
 
 MathOperation.prototype.toString = function() {
     // Return the string representation of MathOperation instance.
-    let answer = "MathOperation: "
-    if (this.left instanceof MathOperation)
-        var left = "(" + this.left + ")";
-    else
-        var left = this.left;
-    if (this.binary() && this.right instanceof MathOperation)
-        var right = "(" + this.right + ")";
-    else
-        var right = this.right;
     if (this.type == "number")
-        answer += "the number " + left;
-    else if (["sqrt", "sin", "cos", "exp"].includes(this.type))
-        answer += this.type + "(" + left + ")";
-    else
-        answer += left + " " + this.type + " " + right;
-    return answer;
+        return this.left;
+    var left = this.left.type == "number" ? this.left : "(" + this.left + ")";
+    if (this.unary())
+        return this.type + "(" + left + ")";
+    var right = this.right.type == "number" ? this.right : "(" + this.right + ")";
+    return left + " " + this.type + " " + right;
 }
