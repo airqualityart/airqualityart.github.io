@@ -35,13 +35,28 @@ function IndexMatchingCharacter(s, i) {
     return (n == 0) ? i-1 : null;
 }
 
-function SimplifyMathString(s) {
-    // Return a simplified version of string s (which should represent a mathematical expression).
+function PreprocessMathString(s) {
+    // Return a pre-processed version of string s (which should represent a mathematical expression).
     //
-    // This function removes heading and leading white space, as well as global parentheses and brackets.
-    s = s.trim();
+    // This function:
+    // - removes white space.
+    // - removes global parentheses and brackets (curly and square).
+    // - replaces implicit multiplications with explicit multiplications (eg. 3x -> 3*x, leading -x -> -1*x)
+    //
+    s = s.replace(/\s+/g, "");
     while (s.length >= 2 && "([{".includes(s[0]) && IndexMatchingCharacter(s, 0) == s.length-1)
-        s = s.substring(1, s.length-1).trim();
+        s = s.substring(1, s.length-1);
+    let letter = new RegExp(/[a-z]|[A-Z]/);
+    let number = new RegExp(/[0-9]/);
+    if (s.length >= 2 && s[0] == "-" && letter.test(s[1])) s = "-1*" + s.substring(1);
+    let i = 0;
+    while (i < s.length-1)
+        if (number.test(s[i]) && letter.test(s[i+1])) {
+            s = s.substring(0, i+1) + "*" + s.substring(i+1);
+            i += 3;
+        } else {
+            i += 1;
+        }
     return s;
 }
 
@@ -118,4 +133,12 @@ MathOperation.prototype.toString = function() {
         var right = this.right.toString_needs_parentheses() ? "(" + this.right + ")" : this.right;
         return left + " " + this.type + " " + right;
     }
+}
+
+function ParseMathExpression(s) {
+    // Return the MathOperation object that corresponds to given character string representing a math expression.
+    s = PreprocessMathString(s);
+    let n = s.length;
+    if (n == 0) return null;
+    return "TODO implement this function!"
 }

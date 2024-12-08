@@ -80,61 +80,73 @@ TestFunction(
     null,
     "IndexMatchingCharacter_null_4");
 
-// SimplifyMathString
+// PreprocessMathString
 
 TestFunction(
-    SimplifyMathString,
-    ["  some white space around  "],
-    "some white space around",
-    "SimplifyMathString_simple_1");
+    PreprocessMathString,
+    ["  1  "],
+    "1",
+    "PreprocessMathString_simple_1");
 
 TestFunction(
-    SimplifyMathString,
+    PreprocessMathString,
     ["(1 + 1)"],
-    "1 + 1",
-    "SimplifyMathString_simple_2");
+    "1+1",
+    "PreprocessMathString_simple_2");
 
 TestFunction(
-    SimplifyMathString,
-    ["( 2 + 2 )"],
-    "2 + 2",
-    "SimplifyMathString_simple_3");
+    PreprocessMathString,
+    ["( 2   +    2 )"],
+    "2+2",
+    "PreprocessMathString_simple_3");
 
 TestFunction(
-    SimplifyMathString,
+    PreprocessMathString,
     ["( [1 + 2] )"],
-    "1 + 2",
-    "SimplifyMathString_complex_1");
+    "1+2",
+    "PreprocessMathString_complex_1");
 
 TestFunction(
-    SimplifyMathString,
-    ["nothing to simplify here"],
-    "nothing to simplify here",
-    "SimplifyMathString_nothing_1");
+    PreprocessMathString,
+    ["3x"],
+    "3*x",
+    "PreprocessMathString_implicit_1");
 
 TestFunction(
-    SimplifyMathString,
-    ["(nothing to simplify here"],
-    "(nothing to simplify here",
-    "SimplifyMathString_nothing_2");
+    PreprocessMathString,
+    ["{2 + 3 cos(4)}"],
+    "2+3*cos(4)",
+    "PreprocessMathString_implicit_2");
 
 TestFunction(
-    SimplifyMathString,
+    PreprocessMathString,
+    [" - x + 4"],
+    "-1*x+4",
+    "PreprocessMathString_implicit_3");
+
+TestFunction(
+    PreprocessMathString,
+    ["x"],
+    "x",
+    "PreprocessMathString_nothing_1");
+
+TestFunction(
+    PreprocessMathString,
+    ["(x+4"],
+    "(x+4",
+    "PreprocessMathString_nothing_2");
+
+TestFunction(
+    PreprocessMathString,
     ["("],
     "(",
-    "SimplifyMathString_nothing_3");
+    "PreprocessMathString_nothing_3");
 
 TestFunction(
-    SimplifyMathString,
+    PreprocessMathString,
     [""],
     "",
-    "SimplifyMathString_nothing_4");
-
-TestFunction(
-    SimplifyMathString,
-    ["(1+1) + (2*3)"],
-    "(1+1) + (2*3)",
-    "SimplifyMathString_nothing_5");
+    "PreprocessMathString_nothing_4");
 
 // MathOperation.unary and MathOperation.binary
 
@@ -537,5 +549,121 @@ TestObjectMethod(
     9,
     "MathOperation.eval_nested_5",
 )
+
+// ParseMathExpression
+
+TestFunction(
+    ParseMathExpression,
+    ["3"],
+    new MathOperation("number", 3),
+    "ParseMathExpression_simple_1");
+
+TestFunction(
+    ParseMathExpression,
+    ["-3"],
+    new MathOperation("number", -3),
+    "ParseMathExpression_simple_2");
+
+TestFunction(
+    ParseMathExpression,
+    ["2 + 5"],
+    new MathOperation("+", 2, 5),
+    "ParseMathExpression_simple_3");
+
+TestFunction(
+    ParseMathExpression,
+    ["cos(1)"],
+    new MathOperation("cos", 1),
+    "ParseMathExpression_simple_4");
+
+TestFunction(
+    ParseMathExpression,
+    ["cos(pi)"],
+    new MathOperation("cos", Math.PI),
+    "ParseMathExpression_simple_5");
+
+TestFunction(
+    ParseMathExpression,
+    ["4.7"],
+    new MathOperation("number", 4.7),
+    "ParseMathExpression_simple_6");
+
+TestFunction(
+    ParseMathExpression,
+    ["4.7 cos(pi)"],
+    new MathOperation("*", 4.7, new MathOperation("cos", Math.PI)),
+    "ParseMathExpression_simple_7");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 + 5 * 2"],
+    new MathOperation("+", 3, new MathOperation("*", 5, 2)),
+    "ParseMathExpression_priority_1");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 + 5 / 2"],
+    new MathOperation("+", 3, new MathOperation("/", 5, 2)),
+    "ParseMathExpression_priority_2");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 + 5 ^ 2"],
+    new MathOperation("+", 3, new MathOperation("^", 5, 2)),
+    "ParseMathExpression_priority_3");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 - 5 * 2"],
+    new MathOperation("-", 3, new MathOperation("*", 5, 2)),
+    "ParseMathExpression_priority_4");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 - 5 / 2"],
+    new MathOperation("-", 3, new MathOperation("/", 5, 2)),
+    "ParseMathExpression_priority_5");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 - 5 ^ 2"],
+    new MathOperation("-", 3, new MathOperation("^", 5, 2)),
+    "ParseMathExpression_priority_6");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 * 5 ^ 2"],
+    new MathOperation("*", 3, new MathOperation("^", 5, 2)),
+    "ParseMathExpression_priority_7");
+
+TestFunction(
+    ParseMathExpression,
+    ["3 / 5 ^ 2"],
+    new MathOperation("/", 3, new MathOperation("^", 5, 2)),
+    "ParseMathExpression_priority_8");
+
+TestFunction(
+    ParseMathExpression,
+    ["5 ^ 2 + 4 * 8 - 5"],
+    new MathOperation("+", new MathOperation("^", 5, 2), new MathOperation("-", new MathOperation("*", 4, 8), 5)),
+    "ParseMathExpression_priority_9");
+
+TestFunction(
+    ParseMathExpression,
+    ["(3 / 5)"],
+    new MathOperation("/", 3, 5),
+    "ParseMathExpression_parentheses_1");
+
+TestFunction(
+    ParseMathExpression,
+    ["(3 + 5) * (4 - 2)"],
+    new MathOperation("*", new MathOperation("+", 3, 5), new MathOperation("-", 4, 2)),
+    "ParseMathExpression_parentheses_2");
+
+TestFunction(
+    ParseMathExpression,
+    ["(3.8 ^ 5) - ([91 + 9] * 2)"],
+    new MathOperation("-", new MathOperation("^", 3.8, 5), new MathOperation("*", new MathOperation("+", 91, 9), 2)),
+    "ParseMathExpression_parentheses_3");
 
 DisplayNumberOFPassedTests();
