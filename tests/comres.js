@@ -550,6 +550,158 @@ TestObjectMethod(
     "MathOperation.eval_nested_5",
 )
 
+// NumberSubstring
+
+TestFunction(
+    NumberSubstring,
+    ["3", 0],
+    "3",
+    "NumberSubstring_simple_1");
+
+TestFunction(
+    NumberSubstring,
+    ["3.2", 0],
+    "3.2",
+    "NumberSubstring_simple_2");
+
+TestFunction(
+    NumberSubstring,
+    ["3.2", 2],
+    "2",
+    "NumberSubstring_simple_3");
+
+TestFunction(
+    NumberSubstring,
+    ["3.", 0],
+    "3.",
+    "NumberSubstring_simple_4");
+
+TestFunction(
+    NumberSubstring,
+    [".4", 0],
+    ".4",
+    "NumberSubstring_simple_5");
+
+TestFunction(
+    NumberSubstring,
+    ["-1", 0],
+    "-1",
+    "NumberSubstring_simple_6");
+
+TestFunction(
+    NumberSubstring,
+    ["3e2", 0],
+    "3e2",
+    "NumberSubstring_exponent_1");
+
+TestFunction(
+    NumberSubstring,
+    ["3.19e-2.1", 0],
+    "3.19e-2.1",
+    "NumberSubstring_exponent_2");
+
+TestFunction(
+    NumberSubstring,
+    ["3.19E-2.1", 0],
+    "3.19E-2.1",
+    "NumberSubstring_exponent_3");
+
+TestFunction(
+    NumberSubstring,
+    [".19E-2.1", 0],
+    ".19E-2.1",
+    "NumberSubstring_exponent_4");
+
+TestFunction(
+    NumberSubstring,
+    ["3.E-2.1", 0],
+    "3.E-2.1",
+    "NumberSubstring_exponent_5");
+
+TestFunction(
+    NumberSubstring,
+    ["3.2E-.1", 0],
+    "3.2E-.1",
+    "NumberSubstring_exponent_6");
+
+TestFunction(
+    NumberSubstring,
+    ["3.2E-4.", 0],
+    "3.2E-4.",
+    "NumberSubstring_exponent_7");
+
+TestFunction(
+    NumberSubstring,
+    ["E-4.", 0],
+    "E-4.",
+    "NumberSubstring_exponent_8");
+
+TestFunction(
+    NumberSubstring,
+    ["3", 1],
+    null,
+    "NumberSubstring_null_1");
+
+TestFunction(
+    NumberSubstring,
+    ["3", -1],
+    null,
+    "NumberSubstring_null_2");
+
+TestFunction(
+    NumberSubstring,
+    ["a", 0],
+    null,
+    "NumberSubstring_null_3");
+
+TestFunction(
+    NumberSubstring,
+    ["3.3.2", 0],
+    null,
+    "NumberSubstring_null_4");
+
+TestFunction(
+    NumberSubstring,
+    ["3e3e1.2", 0],
+    null,
+    "NumberSubstring_null_5");
+
+TestFunction(
+    NumberSubstring,
+    ["2.2E-4", 0, false],
+    null,
+    "NumberSubstring_null_6");
+
+TestFunction(
+    NumberSubstring,
+    ["", 0],
+    null,
+    "NumberSubstring_null_7");
+
+TestFunction(
+    NumberSubstring,
+    ["-", 0],
+    null,
+    "NumberSubstring_null_8");
+
+TestFunction(
+    NumberSubstring,
+    ["cos(3.14)", 4],
+    "3.14",
+    "NumberSubstring_complex_1");
+
+TestFunction(
+    NumberSubstring,
+    ["cos(3.001+2*3.14)", 4],
+    "3.001",
+    "NumberSubstring_complex_2");
+
+TestFunction(
+    NumberSubstring,
+    ["cos(3.001+2.21e-3.1*3.14)", 10],
+    "2.21e-3.1",
+    "NumberSubstring_complex_3");
+
 // ParseMathExpression
 
 TestFunction(
@@ -566,8 +718,8 @@ TestFunction(
 
 TestFunction(
     ParseMathExpression,
-    ["2 + 5"],
-    new MathOperation("+", 2, 5),
+    ["2E3 + 5"],
+    new MathOperation("+", 2000, 5),
     "ParseMathExpression_simple_3");
 
 TestFunction(
@@ -596,8 +748,8 @@ TestFunction(
 
 TestFunction(
     ParseMathExpression,
-    ["3 + 5 * 2"],
-    new MathOperation("+", 3, new MathOperation("*", 5, 2)),
+    ["3 + 5.2e-1 * 2"],
+    new MathOperation("+", 3, new MathOperation("*", 0.52, 2)),
     "ParseMathExpression_priority_1");
 
 TestFunction(

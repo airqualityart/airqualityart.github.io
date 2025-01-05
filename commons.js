@@ -46,8 +46,8 @@ function PreprocessMathString(s) {
     s = s.replace(/\s+/g, "");
     while (s.length >= 2 && "([{".includes(s[0]) && IndexMatchingCharacter(s, 0) == s.length-1)
         s = s.substring(1, s.length-1);
-    let letter = new RegExp(/[a-z]|[A-Z]/);
-    let number = new RegExp(/[0-9]/);
+    let letter = new RegExp(/^[a-z]|[A-Z]$/);
+    let number = new RegExp(/^[0-9]$/);
     if (s.length >= 2 && s[0] == "-" && letter.test(s[1])) s = "-1*" + s.substring(1);
     let i = 0;
     while (i < s.length-1)
@@ -58,6 +58,32 @@ function PreprocessMathString(s) {
             i += 1;
         }
     return s;
+}
+
+function NumberSubstring(s, i, allow_exponent=true) {
+    // Return the substring of s that represents the number that starts at s[i], return null if problem.
+    let n = s.length;
+    if (i < 0 || i >= n) return null;
+    let number = new RegExp(/^[0-9]$/);
+    let exponent = new RegExp(/^(e|E)$/);
+    let found_period = false;
+    let j = i + (s[i] == "-" ? 1 : 0);
+    while (j < n) {
+        if (exponent.test(s[j])) {
+            if (!allow_exponent) return null;
+            let second_part = NumberSubstring(s, j+1, false);
+            return second_part === null ? null : s.substring(i, j+1) + second_part;
+        } else if (s[j] == ".") {
+            if (found_period) return null;
+            found_period = true;
+            j++;
+        } else if (number.test(s[j])) {
+            j++;
+        } else {
+            break;
+        }
+    }
+    return (j == i || j == i+1 && s[i] == "-") ? null : s.substring(i, j);
 }
 
 let MATH_OPERATIONS = {};
