@@ -126,6 +126,60 @@ TestFunction(
 
 TestFunction(
     PreprocessMathString,
+    ["3.exp(4)"],
+    "3.*exp(4)",
+    "PreprocessMathString_implicit_4");
+
+TestFunction(
+    PreprocessMathString,
+    ["cos(1) sin[2]"],
+    "cos(1)*sin[2]",
+    "PreprocessMathString_implicit_5");
+
+TestFunction(
+    PreprocessMathString,
+    ["cos(1) sin[2] exp{-1} sqrt(2)"],
+    "cos(1)*sin[2]*exp{-1}*sqrt(2)",
+    "PreprocessMathString_implicit_6");
+
+TestFunction(
+    PreprocessMathString,
+    ["cos(pi)3y"],
+    "cos(pi)*3*y",
+    "PreprocessMathString_implicit_7");
+
+TestFunction(
+    PreprocessMathString,
+    ["1e5"],
+    "1e5",
+    "PreprocessMathString_exponent_1");
+
+TestFunction(
+    PreprocessMathString,
+    ["1e5 + 2000"],
+    "1e5+2000",
+    "PreprocessMathString_exponent_2");
+
+TestFunction(
+    PreprocessMathString,
+    ["(2000 - 3E.4)"],
+    "2000-3E.4",
+    "PreprocessMathString_exponent_3");
+
+TestFunction(
+    PreprocessMathString,
+    ["(2000 - 3.E.4)"],
+    "2000-3.E.4",
+    "PreprocessMathString_exponent_4");
+
+TestFunction(
+    PreprocessMathString,
+    ["3 + 5.2e-1 * 2"],
+    "3+5.2e-1*2",
+    "PreprocessMathString_exponent_5");
+
+TestFunction(
+    PreprocessMathString,
     ["x"],
     "x",
     "PreprocessMathString_nothing_1");
@@ -147,6 +201,30 @@ TestFunction(
     [""],
     "",
     "PreprocessMathString_nothing_4");
+
+TestFunction(
+    PreprocessMathString,
+    ["abc def"],
+    null,
+    "PreprocessMathString_null_1");
+
+TestFunction(
+    PreprocessMathString,
+    ["abc    \t\ndef"],
+    null,
+    "PreprocessMathString_null_2");
+
+TestFunction(
+    PreprocessMathString,
+    ["abc_ def"],
+    null,
+    "PreprocessMathString_null_3");
+
+TestFunction(
+    PreprocessMathString,
+    ["abc _def"],
+    null,
+    "PreprocessMathString_null_4");
 
 // MathOperation.unary and MathOperation.binary
 
@@ -702,120 +780,237 @@ TestFunction(
     "2.21e-3.1",
     "NumberSubstring_complex_3");
 
-// ParseMathExpression
+// String2Number
 
 TestFunction(
-    ParseMathExpression,
+    String2Number,
+    ["17"],
+    17,
+    "String2Number_simple_1");
+
+TestFunction(
+    String2Number,
+    ["-17"],
+    -17,
+    "String2Number_simple_2");
+
+TestFunction(
+    String2Number,
+    ["3.2"],
+    3.2,
+    "String2Number_simple_3");
+
+TestFunction(
+    String2Number,
+    [".2"],
+    0.2,
+    "String2Number_simple_4");
+
+TestFunction(
+    String2Number,
+    ["2."],
+    2,
+    "String2Number_simple_5");
+
+TestFunction(
+    String2Number,
+    ["2e3"],
+    2000,
+    "String2Number_simple_6");
+
+TestFunction(
+    String2Number,
+    ["-2e-1"],
+    -0.2,
+    "String2Number_simple_7");
+
+TestFunction(
+    String2Number,
+    ["3e-2."],
+    0.03,
+    "String2Number_simple_8");
+
+TestFunction(
+    String2Number,
+    ["3e-0.2"],
+    3 * Math.pow(10, -0.2),
+    "String2Number_simple_9");
+
+TestFunction(
+    String2Number,
+    ["3e-.2"],
+    3 * Math.pow(10, -0.2),
+    "String2Number_simple_10");
+
+// ParseMathExpressionAndEval
+
+TestFunction(
+    ParseMathExpressionAndEval,
     ["3"],
-    new MathOperation("number", 3),
-    "ParseMathExpression_simple_1");
+    3,
+    "ParseMathExpressionAndEval_simple_1");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["-3"],
-    new MathOperation("number", -3),
-    "ParseMathExpression_simple_2");
+    -3,
+    "ParseMathExpressionAndEval_simple_2");
 
 TestFunction(
-    ParseMathExpression,
-    ["2E3 + 5"],
-    new MathOperation("+", 2000, 5),
-    "ParseMathExpression_simple_3");
-
-TestFunction(
-    ParseMathExpression,
-    ["cos(1)"],
-    new MathOperation("cos", 1),
-    "ParseMathExpression_simple_4");
-
-TestFunction(
-    ParseMathExpression,
-    ["cos(pi)"],
-    new MathOperation("cos", Math.PI),
-    "ParseMathExpression_simple_5");
-
-TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["4.7"],
-    new MathOperation("number", 4.7),
-    "ParseMathExpression_simple_6");
+    4.7,
+    "ParseMathExpressionAndEval_simple_3");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
+    ["2E3 + 5"],
+    2005,
+    "ParseMathExpressionAndEval_simple_4");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["cos(1)"],
+    Math.cos(1),
+    "ParseMathExpressionAndEval_simple_5");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["sqrt(16)"],
+    4,
+    "ParseMathExpressionAndEval_simple_6");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["sqrt{16}"],
+    4,
+    "ParseMathExpressionAndEval_simple_7");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["sqrt[16]"],
+    4,
+    "ParseMathExpressionAndEval_simple_8");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["2sinvar+1", {sinvar: 7}],
+    15,
+    "ParseMathExpressionAndEval_simple_9");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["2sin_var+1", {sin_var: 7}],
+    15,
+    "ParseMathExpressionAndEval_simple_10");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["cos(pi)"],
+    -1,
+    "ParseMathExpressionAndEval_simple_11");
+
+TestFunction(
+    ParseMathExpressionAndEval,
     ["4.7 cos(pi)"],
-    new MathOperation("*", 4.7, new MathOperation("cos", Math.PI)),
-    "ParseMathExpression_simple_7");
+    -4.7,
+    "ParseMathExpressionAndEval_simple_12");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
+    ["-4.7 cos(3e0)"],
+    -4.7 * Math.cos(3),
+    "ParseMathExpressionAndEval_simple_13");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["-4. cos(3)"],
+    -4 * Math.cos(3),
+    "ParseMathExpressionAndEval_simple_14");
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["my_variable + 4", {my_variable: 18}],
+    22,
+    "ParseMathExpressionAndEval_simple_15");
+
+TestFunction(
+    ParseMathExpressionAndEval,
     ["3 + 5.2e-1 * 2"],
-    new MathOperation("+", 3, new MathOperation("*", 0.52, 2)),
-    "ParseMathExpression_priority_1");
+    4.04,
+    "ParseMathExpressionAndEval_priority_1");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["3 + 5 / 2"],
-    new MathOperation("+", 3, new MathOperation("/", 5, 2)),
-    "ParseMathExpression_priority_2");
+    5.5,
+    "ParseMathExpressionAndEval_priority_2");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["3 + 5 ^ 2"],
-    new MathOperation("+", 3, new MathOperation("^", 5, 2)),
-    "ParseMathExpression_priority_3");
+    28,
+    "ParseMathExpressionAndEval_priority_3");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["3 - 5 * 2"],
-    new MathOperation("-", 3, new MathOperation("*", 5, 2)),
-    "ParseMathExpression_priority_4");
+    -7,
+    "ParseMathExpressionAndEval_priority_4");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["3 - 5 / 2"],
-    new MathOperation("-", 3, new MathOperation("/", 5, 2)),
-    "ParseMathExpression_priority_5");
+    0.5,
+    "ParseMathExpressionAndEval_priority_5");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["3 - 5 ^ 2"],
-    new MathOperation("-", 3, new MathOperation("^", 5, 2)),
-    "ParseMathExpression_priority_6");
+    -22,
+    "ParseMathExpressionAndEval_priority_6");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["3 * 5 ^ 2"],
-    new MathOperation("*", 3, new MathOperation("^", 5, 2)),
-    "ParseMathExpression_priority_7");
+    75,
+    "ParseMathExpressionAndEval_priority_7");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["3 / 5 ^ 2"],
-    new MathOperation("/", 3, new MathOperation("^", 5, 2)),
-    "ParseMathExpression_priority_8");
+    3 / 25,
+    "ParseMathExpressionAndEval_priority_8");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["5 ^ 2 + 4 * 8 - 5"],
-    new MathOperation("+", new MathOperation("^", 5, 2), new MathOperation("-", new MathOperation("*", 4, 8), 5)),
-    "ParseMathExpression_priority_9");
+    52,
+    "ParseMathExpressionAndEval_priority_9");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["(3 / 5)"],
-    new MathOperation("/", 3, 5),
-    "ParseMathExpression_parentheses_1");
+    0.6,
+    "ParseMathExpressionAndEval_parentheses_1");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["(3 + 5) * (4 - 2)"],
-    new MathOperation("*", new MathOperation("+", 3, 5), new MathOperation("-", 4, 2)),
-    "ParseMathExpression_parentheses_2");
+    16,
+    "ParseMathExpressionAndEval_parentheses_2");
 
 TestFunction(
-    ParseMathExpression,
+    ParseMathExpressionAndEval,
     ["(3.8 ^ 5) - ([91 + 9] * 2)"],
-    new MathOperation("-", new MathOperation("^", 3.8, 5), new MathOperation("*", new MathOperation("+", 91, 9), 2)),
-    "ParseMathExpression_parentheses_3");
+    3.8*3.8*3.8*3.8*3.8 - 200,
+    "ParseMathExpressionAndEval_parentheses_3",
+    1e-10);
+
+TestFunction(
+    ParseMathExpressionAndEval,
+    ["abc def"],
+    null,
+    "ParseMathExpressionAndEval_null_1");
 
 DisplayNumberOFPassedTests();
