@@ -236,7 +236,7 @@ False</pre></code>
 
       <h1>Git (version control)</h1>
 
-      <h2>Branches and remotes</h2>
+      <h2>Working with multiple branches</h2>
 
       <p>There is a branch on a remote but this branch does not exist locally, and I want it locally:</p>
 
@@ -247,6 +247,12 @@ git branch $local_branch_name $remote_name/$remote_branch_name</pre></code>
 
       <pre><code>git checkout $local_branch_name
 git push [-u] $remote_name $remote_branch_name</pre></code>
+
+      I have been working on a feature branch, but the main branch has advanced in the meantime. I want to rebase so
+      that my feature branch has the changes made in the main (remember that rebasing changes the history!):
+
+      <pre><code>git checkout $feature_branch
+git rebase $main_branch</pre></code>
 
       <h2>Miscellaneous</h2>
 
