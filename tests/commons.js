@@ -9,6 +9,21 @@
 let n_tests_total = 0;
 let n_tests_passed = 0;
 
+function arraysAreEqual(array1, array2) {
+    // Return true iff the two given arrays are equal.
+    n = array1.length;
+    if (array2.length != n) return false;
+    for (i = 0; i < n; i++) {
+        if (array1[i] instanceof Array && array2[i] instanceof Array) {
+            ok = arraysAreEqual(array1[i], array2[i]);
+        } else {
+            ok = array1[i] == array2[i];
+        }
+        if (! ok) return false;
+    }
+    return true;
+}
+
 function PrettyPrint(obj) {
     // Pretty-print given object.
     if (typeof obj !== "object")
@@ -34,7 +49,11 @@ function ShowTestResult(args, result, answer, header, id, tol) {
             content += Tagify("Argument " + (i+1) + " (" + (typeof args[i]) + ") = " + PrettyPrint(args[i]), "div");
     content += Tagify("Expected answer (" + (typeof answer) + ") = " + answer, "div");
     if (tol === undefined)
-        var ok = (result === answer);
+        if (result instanceof Array && answer instanceof Array) {
+            var ok = arraysAreEqual(result, answer);
+        } else {
+            var ok = (result === answer);
+        }
     else {
         var ok = (Math.abs(result - answer) <= tol);
         content += Tagify("Tolerance = " + tol, "div");
