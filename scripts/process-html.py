@@ -53,16 +53,28 @@ def indent(level=0, nindent=2):
     return " " * level * nindent
 
 
+def tag(name, content, close=True, **attributes):
+    """Return the HTML tag corresponding to given name and attributes."""
+    attrs = " " if attributes else ""
+    attrs += " ".join('%s="%s"' % (k, v) for k, v in attributes.items())
+    out = "<%s%s>%s" % (name, attrs, content)
+    if close:
+        out += "</%s>" % name
+    return out
+
+
+def div(content, close=True, **attributes):
+    """Return the HTML div tag corresponding to given name and attributes."""
+    return tag("div", content, close=close, **attributes)
+
+
 def main_nav(files, nicknames, level=0, nindent=2):
     """Return HTML code for main navigation bar."""
     out = '%s<nav class="main">' % indent(level, nindent)
     for filename in files["."]:
         filepath = join(".", filename)
-        out += '\n%s<div><a href="%s">%s</a></div>' % (
-            indent(level + 1, nindent),
-            filepath,
-            nicknames[filepath],
-        )
+        a = tag("a", nicknames[filepath], href=filepath)
+        out += "\n%s%s" % (indent(level + 1, nindent), div(a))
     sort_key = lambda d: list(nicknames.keys()).index(
         join(".", d, "index.html")
     )
@@ -74,26 +86,18 @@ def main_nav(files, nicknames, level=0, nindent=2):
             raise ValueError('Expecting index.html in "%s."' % dirname)
         filepath = join(".", dirname, "index.html")
         out += "\n%s" % indent(level + 1, nindent)
+        a = tag("a", nicknames[filepath], href=filepath)
         if len(files[dirname]["."]) == 0:
-            out += '<div><a href="%s">%s</a></div>' % (
-                filepath,
-                nicknames[filepath],
-            )
+            out += div(a)
         else:
-            out += '<div class="dropdown"><a href="%s">%s</a>' % (
-                filepath,
-                nicknames[filepath],
-            )
+            out += div(a, close=False, **{"class": "dropdown"})
             out += "\n%s<div>" % indent(level + 2, nindent)
             filepaths = [join(".", dirname, f) for f in files[dirname]["."]]
             sort_key = lambda p: list(nicknames.keys()).index(p)
             filepaths = sorted(filepaths, key=sort_key)
             for filepath in filepaths:
-                out += '\n%s<a href="%s">%s</a>' % (
-                    indent(level + 3, nindent),
-                    filepath,
-                    nicknames[filepath],
-                )
+                a = tag("a", nicknames[filepath], href=filepath)
+                out += '\n%s%s' % (indent(level + 3, nindent), a)
             out += "\n%s</div>" % indent(level + 2, nindent)
             out += "\n%s</div>" % indent(level + 1, nindent)
     out += "\n%s</nav>" % indent(level, nindent)

@@ -14,4 +14,4 @@ The full text of these licenses can be found in the [LICENSES](./LICENSES) direc
 
 # Quality control status
 
-[![Python code](https://github.com/airqualityart/airqualityart.github.io/actions/workflows/quality-control_python.yml/badge.svg)](https://github.com/airqualityart/airqualityart.github.io/actions/workflows/quality-control_python.yml)
+[![Quality Control for Python Code](https://github.com/airqualityart/airqualityart.github.io/actions/workflows/quality-control_python.yml/badge.svg)](https://github.com/airqualityart/airqualityart.github.io/actions/workflows/quality-control_python.yml)
