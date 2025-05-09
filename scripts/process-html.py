@@ -97,7 +97,7 @@ def main_nav(files, nicknames, level=0, nindent=2):
             filepaths = sorted(filepaths, key=sort_key)
             for filepath in filepaths:
                 a = tag("a", nicknames[filepath], href=filepath)
-                out += '\n%s%s' % (indent(level + 3, nindent), a)
+                out += "\n%s%s" % (indent(level + 3, nindent), a)
             out += "\n%s</div>" % indent(level + 2, nindent)
             out += "\n%s</div>" % indent(level + 1, nindent)
     out += "\n%s</nav>" % indent(level, nindent)
