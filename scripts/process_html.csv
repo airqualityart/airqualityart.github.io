@@ -1,0 +1,17 @@
+# Copyright (c) 2025, Air Quality and Related Topics (AQArt).
+#
+# License: BSD 3-clause "new" or "revised" license (BSD-3-clause).
+#
+# This file maps the HTML files of this repository to the names they should
+# have in the website's menus. The order of the files below defines their order
+# in the menus.
+
+index.html,                Home
+dens/index.html,           Solver
+dens/onedim.html,          1D
+dens/twodim.html,          2D
+notebook/index.html,       Notebook
+tests/index.html,          Tests
+tests/comres.html,         Commons
+tests/lib_mathparser.html, MathParser
+tests/dens.html,           Solver

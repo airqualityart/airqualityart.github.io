@@ -183,11 +183,13 @@ def main_nav(files, current, level=0, nindent=2):
 
             # Add the index.html for this dropdown menu
             index = os.path.join(dropdown, "index.html")
-            attrs = {"class": "active"} if index == current else {}
+            active = index == current or os.path.dirname(current) == dropdown
+            attrs = {"class": "active"} if active else {}
             attrs["href"] = relative_path(index, current)
             a = tag("a", content=nickname, **attrs)
             close = sum(d == dropdown for d in dropdowns) == 1
-            div_ = div(content=a, close=close, **{"class": "dropdown"})
+            attrs = {"class": "dropdown"} if not close else {}
+            div_ = div(content=a, close=close, **attrs)
             nav.append("{0}{1}".format(current_indent, div_))
 
             # Nothing else to do if there is only one item in the dropdown menu
@@ -219,20 +221,24 @@ def main_nav(files, current, level=0, nindent=2):
 
 
 if __name__ == "__main__":
-    filepaths = {
-        "index.html": "Home",
-        "dens/index.html": "Solver",
-        "dens/onedim.html": "1D",
-        "dens/twodim.html": "2D",
-        "notebook/index.html": "Notebook",
-        "tests/index.html": "Tests",
-        "tests/comres.html": "Commons",
-        "tests/lib_mathparser.html": "MathParser",
-        "tests/dens.html": "Solver",
-    }
+    # Get the list of files to process
+    with open("{0}.csv".format(__file__[:-3])) as f:
+        lines = [line.strip() for line in f.read().split("\n")]
+    lines = [line for line in lines if line != "" and line[0] != "#"]
+    lines = [line.split(",") for line in lines]
+    files = dict((line[0].strip(), line[1].strip()) for line in lines)
 
-    ## Add or replace the main navigation block to all the files
-
-    for filepath in filepaths:
-        print("\n\nProcessing %s...\n\n" % filepath)
-        print(main_nav(filepaths, filepath, level=3))
+    # Add or replace the main navigation block in all the files
+    for current in files:
+        print("Creating main nav bar for {0}...".format(current))
+        with open(current, mode="r") as f:
+            lines = f.read().split("\n")
+        lines_striped = [line.strip() for line in lines]
+        start = lines_striped.index('<nav class="main">')
+        end = lines_striped.index("</nav>")
+        with open(current, mode="w") as f:
+            f.write("\n".join(lines[:start]))
+            f.write("\n")
+            f.write(main_nav(files, current, level=2))
+            f.write("\n")
+            f.write("\n".join(lines[end + 1 :]))
