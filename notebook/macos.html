@@ -13,8 +13,8 @@
   <head>
     <title>AQart's notebook</title>
     <meta charset="UTF-8"/>
-    <meta name="description" content="Air Quality And Related Topics' notebook (table of contents)"/>
-    <meta name="keywords" content="AQart notebook TOC"/>
+    <meta name="description" content="Air Quality And Related Topics' notebook (MacOS)"/>
+    <meta name="keywords" content="AQart notebook MacOS"/>
     <meta name="author" content="Air Quality And Related Topics"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="../commons.css"/>
@@ -23,7 +23,7 @@
   <body>
 
     <header>
-      AQart's notebook: contents
+      AQart's notebook: MacOS
     </header>
 
     <nav class="main">
@@ -41,7 +41,7 @@
           <a href="./python.html">Python</a>
           <a href="./html.html">HTML</a>
           <a href="./javascript.html">JavaScript</a>
-          <a href="./macos.html">MacOS</a>
+          <a class="active" href="./macos.html">MacOS</a>
           <a href="./misc.html">Miscellaneous</a>
         </div>
       </div>
@@ -56,20 +56,42 @@
 
     <main>
 
-      <p>I have notes on the following topics:</p>
+      <h1>Modifier keys</h1>
+
+      Here is how I like to set up my modifier keys on MacOS (System settings &gt; Keyboard &gt; Keyboard Shortcuts
+      &gt; Modifier Keys):
+
+      <img class="screenshot" src="./assets/screenshot_MacOS_modifier-keys.png"
+           alt="Screenshot of my MacOS modifier keys configuration"/>
+
+      <h1>Automator Quick Actions</h1>
+
+      <p>To create custom actions in MacOS, open Automator and create a Quick Action (see examples below). Once your
+      Quick Action is created, you can associate it with a keyboard shortcut in System settings &gt; Keyboard &gt;
+      Keyboard Shortcuts &gt; Services &gt; General.
+
+      <p>Quick actions are saved in <code>~/Library/Services</code>. To go to <code>~/Library</code> in Finder, hold
+      down the Option key while clicking on the "Go" item in the menu bar at the top of the screen.</p>
+
+      <h2>Copy text to clip board</h2>
+
+      I use this type of Quick Action with my email addresses so that I never mistype them:
+
+      <img class="screenshot" src="./assets/screenshot_MacOS_Automator_text-to-clipboard.png"
+           alt="Screenshot of my MacOS Automator Quick Action for copying text to the clip board"/>
+
+      <h2>Edit file in terminal-based text editor</h2>
+
+      <p>This Quick Action allows me to easily edit a text file from Finder (this example uses Emacs):</p>
+
+      <img class="screenshot" src="./assets/screenshot_MacOS_Automator_open-file-with-Emacs.png"
+           alt="Screenshot of my MacOS Automator Quick Action for opening files in Emacs from Finder"/>
+
+      <p>You can find it in Finder's Quick Actions:</p>
 
       <ul>
-        <li><a href="./git.html">Git (version control)</a></li>
-        <li><a href="./c.html">The C programming language</a></li>
-        <li><a href="./python.html">The Python programming language</a></li>
-        <li><a href="./html.html">The HTML markup language</a></li>
-        <li><a href="./javascript.html">The JavaScript programming language</a></li>
-        <li><a href="./macos.html">MacOS configuration</a></li>
-        <li><a href="./misc.html">Miscellaneous topics</a>
-          <ul>
-            <li>(ImageMagick)</li>
-          </ul>
-        </li>
+        <li>By right-clicking on one or more files</li>
+        <li>In the bottom right part of the Finder window when using the "columns" view</li>
       </ul>
 
     </main>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!--
+
+      Copyright (c) 2023-now Air Quality And Related Topics.
+
+      This work is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license (CC
+      BY-SA 4.0). The full text of this license can be found at https://creativecommons.org/licenses/by-sa/4.0/.
+
+    -->
+
+  <head>
+    <title>AQart's notebook</title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Air Quality And Related Topics' notebook (C programming)"/>
+    <meta name="keywords" content="AQart notebook C"/>
+    <meta name="author" content="Air Quality And Related Topics"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../commons.css"/>
+  </head>
+
+  <body>
+
+    <header>
+      AQart's notebook: the C programming language
+    </header>
+
+    <nav class="main">
+      <div><a href="../index.html">Home</a></div>
+      <div class="dropdown"><a href="../dens/index.html">Solver</a>
+        <div>
+          <a href="../dens/onedim.html">1D</a>
+          <a href="../dens/twodim.html">2D</a>
+        </div>
+      </div>
+      <div class="dropdown"><a class="active" href="./index.html">Notebook</a>
+        <div>
+          <a href="./git.html">Git</a>
+          <a class="active" href="./c.html">C</a>
+          <a href="./python.html">Python</a>
+          <a href="./html.html">HTML</a>
+          <a href="./javascript.html">JavaScript</a>
+          <a href="./macos.html">MacOS</a>
+          <a href="./misc.html">Miscellaneous</a>
+        </div>
+      </div>
+      <div class="dropdown"><a href="../tests/index.html">Tests</a>
+        <div>
+          <a href="../tests/comres.html">Commons</a>
+          <a href="../tests/lib_mathparser.html">MathParser</a>
+          <a href="../tests/dens.html">Solver</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+
+      <p>Unless otherwise specified on a case by case basis, these notes have been taken upon reading Kernighan B, W and
+        D. M. Ritchie. <cite>Le langage C, Norme ANSI.</cite>, 2nd edition. Translated into French (original
+        title: <cite>The C programming language</cite>) by J.-F. Groff and E. Mottier. Masson, Paris and Prentice Hall,
+        London, 1997.</p>
+
+      <h1>Variable types</h1>
+
+      <p>There are four basic variable types:</p>
+      <ul>
+        <li>There are char, which can optionally be unsigned.</li>
+        <li>There are int, which can optionally be signed/unsigned and short/long, with the following constraints:
+          <ul>
+            <li>16 bits &lt;= short int &lt;= int &lt;= long int</li>
+            <li>32 bits &lt;= long int</li>
+          </ul>
+        </li>
+        <li>There are floats.</li>
+        <li>There are doubles, which can optionally be long.</li>
+      </ul>
+
+      <p>Sizes of these different types are platform-dependent (check
+        &lt;limits.h&gt; and &lt;float.h&gt; for more information).</p>
+
+      <p>One can use suffixes on numerical constants to force types: u or U for unsigned, l or L for long, f or F for
+      float. For example: 3.2F (decimal constant are of type double by default).</p>
+
+      <h1>Order of precedence</h1>
+
+      <p>The following table is a simplified version of the one that can be found in Kernighan &amp; Ritchie.</p>
+
+      <table>
+        <tr><th>Operator</th><th>Associativity</th></tr>
+        <tr><td>() [] -&gt; .</td><td>left to right</td></tr>
+        <tr><td>! ~ ++ -- *(dereferencing) &amp;(referencing) (type) sizeof</td><td>right to left</td></tr>
+        <tr><td>* / %</td><td>left to right</td></tr>
+        <tr><td>+ -</td><td>left to right</td></tr>
+        <tr><td>&lt; &lt;= &gt; &gt;=</td><td>left to right</td></tr>
+        <tr><td>== !=</td><td>left to right</td></tr>
+        <tr><td>&amp;&amp;</td><td>left to right</td></tr>
+        <tr><td>||</td><td>left to right</td></tr>
+      </table>
+
+      <h1>Pointers</h1>
+
+      <p>0 is the only integer that can be assigned to or compared with a pointer. It is never a valid address, so it
+        can be used to indicate an invalid pointer. It is better to use NULL for invalid pointers though. NULL is
+        defined in &lt;stdio.h&gt.</p>
+
+      <p>The only arithmetic operations that are allowed with pointers are:</p>
+
+      <ul>
+        <li>Assignment of a pointer to another pointer (a cast is needed if the two pointers point on objects of
+          different types).</li>
+        <li>Assignment to and comparison with 0.</li>
+        <li>Addition and subtraction of a pointer and an integer.</li>
+        <li>Subtraction and comparison of two pointers which point on elements of the same array.</li>
+      </ul>
+
+      <h1>Enumerations</h1>
+
+      <p>By default, enumerated variables are given values 0, 1, 2, etc. In the
+        following example, FALSE will be set to 0 and TRUE will be set to
+        1.</p>
+
+      <pre><code>enum {FALSE, TRUE}</pre></code>
+
+      <p>One can change the starting value, for example (FEBRUARY will be set to 2, and so on):</p>
+
+      <pre><code>enum {JANUARY=1, FEBRUARY, MARCH, etc.}</pre></code>
+
+      <h1>Structures</h1>
+
+      <p>The size of a struct is not necessarily equal to the sum of the sizes of its individual components, because the
+      system may pad (within the memory) some of its individual components for alignment reasons.</p>
+
+      <h1>Common or tricky sources of errors</h1>
+
+      <h2>Order of evaluation</h2>
+
+      <p>The arguments in a function call are evaluated in arbitrary order. For example, the behavior of the second
+      statement in what follows is undefined:</p>
+
+      <pre><code>n = 2;
+printf("%d %d", ++n, n*n)</code></pre>
+
+      <p>It may print "3 4" (if n*n is evaluated before ++n), or "3 9" in the other case.</p>
+
+      <p>Similarly, the order of evaluation of the operands of mathematically commutable operators (e.g. addition,
+        multiplication) is arbitrary. The same kind of undefined behavior can occur if operands have side effects (such
+        as incrementing a variable that is used in the other operand).</p>
+
+      <h1>Switch and break</h1>
+
+      <p>In a switch/case statement, use break at the end of each clause to make sure that no other clause is
+      executed. Otherwise, several clauses may be executed.</p>
+
+    </main>
+
+    <footer>
+      <p>Copyright &copy; 2023-now Air Quality And Related Topics.</p>
+      <p>This work is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license
+        (CC BY-SA 4.0). The full text of this license can be
+        found <a href="https://creativecommons.org/licenses/by-sa/4.0/">here</a>.</p>
+    </footer>
+
+  </body>
+
+</html>

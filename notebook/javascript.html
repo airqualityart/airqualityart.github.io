@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!--
+
+      Copyright (c) 2023-now Air Quality And Related Topics.
+
+      This work is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license (CC
+      BY-SA 4.0). The full text of this license can be found at https://creativecommons.org/licenses/by-sa/4.0/.
+
+    -->
+
+  <head>
+    <title>AQart's notebook</title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Air Quality And Related Topics' notebook (JavaScript)"/>
+    <meta name="keywords" content="AQart notebook JavaScript"/>
+    <meta name="author" content="Air Quality And Related Topics"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../commons.css"/>
+  </head>
+
+  <body>
+
+    <header>
+      AQart's notebook: JavaScript
+    </header>
+
+    <nav class="main">
+      <div><a href="../index.html">Home</a></div>
+      <div class="dropdown"><a href="../dens/index.html">Solver</a>
+        <div>
+          <a href="../dens/onedim.html">1D</a>
+          <a href="../dens/twodim.html">2D</a>
+        </div>
+      </div>
+      <div class="dropdown"><a class="active" href="./index.html">Notebook</a>
+        <div>
+          <a href="./git.html">Git</a>
+          <a href="./c.html">C</a>
+          <a href="./python.html">Python</a>
+          <a href="./html.html">HTML</a>
+          <a class="active" href="./javascript.html">JavaScript</a>
+          <a href="./macos.html">MacOS</a>
+          <a href="./misc.html">Miscellaneous</a>
+        </div>
+      </div>
+      <div class="dropdown"><a href="../tests/index.html">Tests</a>
+        <div>
+          <a href="../tests/comres.html">Commons</a>
+          <a href="../tests/lib_mathparser.html">MathParser</a>
+          <a href="../tests/dens.html">Solver</a>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+
+      <p>Unless otherwise specified on a case by case basis, these notes have been taken upon reading <cite>Eloquent
+      JavaScript, A Modern Introduction to Programming</cite>, second edition, by Marijn Haverbeke, No Starch Press, San
+      Francisco, 2015.</p>
+
+      <h1>Basic data types</h1>
+
+      <ul>
+        <li>Numbers (special values: Infinity, -Infinity, NaN)</li>
+        <li>Strings</li>
+        <li>Booleans (true and false, in lower case)</li>
+        <li>Objects</li>
+        <li>Functions</li>
+        <li>Undefined values: null and undefined. Note that (typeof null) returns "object".</li>
+      </ul>
+
+      <h1>Tricky logical expressions</h1>
+
+      <p>Convertions to booleans: the values 0, NaN, and "" are converted to false. Everything else is converted to
+      true.</p>
+
+      <p>The logical expression (null == undefined) evaluates to true.</p>
+
+      <p>(exp1 || epx2) and (exp1 &amp;&amp; exp2) evaluate to either exp1 or exp2 (not true or false), so they might
+        not evaluate to boolean values. For example, (false || "hello") evaluates to "hello".</p>
+
+      <p>The operators === and !== check whether types and values are equal (i.e. they do not do type coercion before
+        the comparison), whereas == and != do do type coercion.</p>
+
+      <h1>Other tricky things</h1>
+
+      <p>Be careful with surprising implicit type coercions, for example:</p>
+
+      <ul>
+        <li>10 * null evaluates to 0 (null is coerced to 0). However, (null == 0) evaluates to false.</li>
+        <li>"10" - 1 evaluates to 9 ("10" is coerced to a number).</li>
+        <li>"10" + 1 evaluates to "101" (1 coerced to a string).</li>
+      </ul>
+
+      <p>Uninitialized variables have the value undefined.</p>
+
+      <p>Accessing a property that does not exist in an object is not an error, it yields an undefined value.</p>
+
+      <p>In a function, a return statement without a value returns undefined.</p>
+
+      <p>Calling a function with the wrong number of arguments creates no error. Extra arguments are ignored and missing
+        ones are set to undefined.</p>
+
+      <p>Similarly to C, a break statement is needed at the end of each clause in a switch/case statement.</p>
+
+      <p>In a block, "let" creates a variable that is local to the block, whereas var does not create a new variable if
+        it already exists in the parent block</p>
+
+    </main>
+
+    <footer>
+      <p>Copyright &copy; 2023-now Air Quality And Related Topics.</p>
+      <p>This work is licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license
+        (CC BY-SA 4.0). The full text of this license can be
+        found <a href="https://creativecommons.org/licenses/by-sa/4.0/">here</a>.</p>
+    </footer>
+
+  </body>
+
+</html>

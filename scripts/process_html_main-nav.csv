@@ -11,6 +11,13 @@ dens/index.html,           Solver
 dens/onedim.html,          1D
 dens/twodim.html,          2D
 notebook/index.html,       Notebook
+notebook/git.html,         Git
+notebook/c.html,           C
+notebook/python.html,      Python
+notebook/html.html,        HTML
+notebook/javascript.html,  JavaScript
+notebook/macos.html,       MacOS
+notebook/misc.html,        Miscellaneous
 tests/index.html,          Tests
 tests/comres.html,         Commons
 tests/lib_mathparser.html, MathParser

@@ -13,8 +13,8 @@
   <head>
     <title>AQart's notebook</title>
     <meta charset="UTF-8"/>
-    <meta name="description" content="Air Quality And Related Topics' notebook (table of contents)"/>
-    <meta name="keywords" content="AQart notebook TOC"/>
+    <meta name="description" content="Air Quality And Related Topics' notebook (HTML)"/>
+    <meta name="keywords" content="AQart notebook HTML"/>
     <meta name="author" content="Air Quality And Related Topics"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="../commons.css"/>
@@ -23,7 +23,7 @@
   <body>
 
     <header>
-      AQart's notebook: contents
+      AQart's notebook: HTML
     </header>
 
     <nav class="main">
@@ -39,7 +39,7 @@
           <a href="./git.html">Git</a>
           <a href="./c.html">C</a>
           <a href="./python.html">Python</a>
-          <a href="./html.html">HTML</a>
+          <a class="active" href="./html.html">HTML</a>
           <a href="./javascript.html">JavaScript</a>
           <a href="./macos.html">MacOS</a>
           <a href="./misc.html">Miscellaneous</a>
@@ -56,21 +56,18 @@
 
     <main>
 
-      <p>I have notes on the following topics:</p>
+      <h1>Useful bindings in Emacs' HTML+ mode:</h1>
 
-      <ul>
-        <li><a href="./git.html">Git (version control)</a></li>
-        <li><a href="./c.html">The C programming language</a></li>
-        <li><a href="./python.html">The Python programming language</a></li>
-        <li><a href="./html.html">The HTML markup language</a></li>
-        <li><a href="./javascript.html">The JavaScript programming language</a></li>
-        <li><a href="./macos.html">MacOS configuration</a></li>
-        <li><a href="./misc.html">Miscellaneous topics</a>
-          <ul>
-            <li>(ImageMagick)</li>
-          </ul>
-        </li>
-      </ul>
+      <table>
+        <tr><th>Action</th><th>Binding</th></tr>
+        <tr><td>Open new tag</td><td>C-c C-o</td></tr>
+        <tr><td>Close currently open tag</td><td>C-c C-e</td></tr>
+        <tr><td>New paragraph</td><td>C-c RET</td></tr>
+        <tr><td>New header (h1, h2, etc.)</td><td>C-c C-1, 2, etc.</td></tr>
+        <tr><td>Delete tag (not its content)</td><td>C-c C-d</td></tr>
+        <tr><td>Create (un)ordered list</td><td>C-c C-c u or o</td></tr>
+        <tr><td>Open current buffer in web browser</td><td>C-c C-v</td></tr>
+      </table>
 
     </main>
 
