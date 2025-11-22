@@ -1,0 +1,26 @@
+# Copyright (c) 2025, Air Quality and Related Topics (AQArt).
+#
+# License: BSD 3-clause "new" or "revised" license (BSD-3-Clause).
+
+name: format_python
+on:
+  push:
+    paths:
+      - '**.py'
+jobs:
+  Ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare Ruff
+        uses: astral-sh/ruff-action@v3
+        with:
+          version: "latest"
+          args: "--version"
+      - name: Run Ruff (check)
+        run: ruff check --diff scripts
+      - name: Run Ruff (format)
+        run: ruff format --diff scripts

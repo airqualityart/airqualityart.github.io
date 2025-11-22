@@ -13,5 +13,3 @@ Unless otherwise specified on a case-by-case basis:
 The full text of these licenses can be found in the [LICENSES](./LICENSES) directory, or [online](https://spdx.org/licenses/).
 
 # Quality control status
-
-[![Quality Control for Python Code](https://github.com/airqualityart/airqualityart.github.io/actions/workflows/quality-control_python.yml/badge.svg)](https://github.com/airqualityart/airqualityart.github.io/actions/workflows/quality-control_python.yml)
