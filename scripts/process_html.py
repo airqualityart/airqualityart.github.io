@@ -222,7 +222,7 @@ def main_nav(files, current, level=0, nindent=2):
 
 if __name__ == "__main__":
     # Get the list of files to process
-    with open("{0}.csv".format(__file__[:-3])) as f:
+    with open("{0}_main-nav.csv".format(__file__[:-3])) as f:
         lines = [line.strip() for line in f.read().split("\n")]
     lines = [line for line in lines if line != "" and line[0] != "#"]
     lines = [line.split(",") for line in lines]
