@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - '**.py'
+      - 'pyproject.toml'
 jobs:
   Ruff:
     runs-on: ubuntu-latest
