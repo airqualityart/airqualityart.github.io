@@ -6,46 +6,23 @@
 
 For each of these files, this script updates the main navigation block.
 
+This script must be called from the root of this repository.
+
 """
 
+import sys
 import os
 
-## Support functions
-
-
-def list_all_html_files(dirpath, sort_key=None):
-    """Return a list of HTML files in given directory and sub-directories.
-
-    Parameters
-    ----------
-    dirpath: str
-        The directory to search recursively.
-    sort_keys: function | None
-        If not None, the function to use to sort the results.
-
-    Returns
-    -------
-    [str,]
-        A list of the paths to the HTML files, relative to dirpath (and sorted
-        if sort_key is not None).
-
-    Notes
-    -----
-    This function skips files and directories that start with ".".
-
-    """
-    out = []
-    for name in os.listdir(dirpath):
-        path = os.path.join(dirpath, name)
-        if name.startswith("."):
-            continue
-        elif os.path.isfile(path) and name.lower().endswith(".html"):
-            out.append(name)
-        elif os.path.isdir(path):
-            out += [os.path.join(name, f) for f in list_all_html_files(path)]
-    if sort_key is not None:
-        out = sorted(out, key=sort_key)
-    return out
+if (
+    sys.version_info.major < 2
+    or sys.version_info.minor == 3
+    and sys.version_info.minor < 7
+):
+    raise RuntimeError(
+        "This script relies on the fact that key order is preserved in "
+        "dictionaries. Please use Python >= 3.7. (You are using %d.%d)"
+        % (sys.version_info.major, sys.version_info.minor)
+    )
 
 
 def relative_path(path_of, relative_to):
@@ -77,7 +54,7 @@ def relative_path(path_of, relative_to):
     return out_with_prefix
 
 
-def indent(level=0, nindent=2):
+def indent(level, nindent):
     """Return spaces corresponding to given indent.
 
     Parameters
@@ -152,3 +129,110 @@ def div(content="", close=True, **attributes):
 
     """
     return tag("div", content, close=close, **attributes)
+
+
+def main_nav(files, current, level=0, nindent=2):
+    """Create the main navigation bar.
+
+    Parameters
+    ----------
+    files: dict(str, str)
+        Files to process (mapping from filepath to nickname).
+    current: str
+        Filepath for the current file.
+    level: int
+        Level of indentation of the navigation bar.
+    nindent: int
+        Number of spaces per level of indentation.
+
+    Returns
+    -------
+    str
+        The text of the navigation bar.
+
+    """
+    nav = tag("nav", close=False, **{"class": "main"})
+    current_indent = indent(level, nindent)
+    nav = ["{0}{1}".format(current_indent, nav)]
+    current_indent += indent(1, nindent)
+
+    # Add the main index.html
+    filename = "index.html"
+    attrs = {"class": "active"} if filename == current else {}
+    attrs["href"] = relative_path(filename, current)
+    a = tag("a", content=files[filename], **attrs)
+    nav.append("{0}{1}".format(current_indent, div(a)))
+
+    # Process each dropdown item
+    dropdowns = [os.path.dirname(f) for f in files]
+    dropdown_old, close = "", True
+    for filepath, nickname in files.items():
+        dropdown = os.path.dirname(filepath)
+
+        if dropdown == "":
+            continue
+
+        # Are we encountering a new dropdown item?
+        if dropdown != dropdown_old:
+            # Finalize the previous dropdown menu if needed
+            if dropdown_old != "" and not close:
+                for _ in range(2):
+                    current_indent = current_indent[: -len(indent(1, nindent))]
+                    nav.append("{0}</div>".format(current_indent))
+            dropdown_old = dropdown
+
+            # Add the index.html for this dropdown menu
+            index = os.path.join(dropdown, "index.html")
+            attrs = {"class": "active"} if index == current else {}
+            attrs["href"] = relative_path(index, current)
+            a = tag("a", content=nickname, **attrs)
+            close = sum(d == dropdown for d in dropdowns) == 1
+            div_ = div(content=a, close=close, **{"class": "dropdown"})
+            nav.append("{0}{1}".format(current_indent, div_))
+
+            # Nothing else to do if there is only one item in the dropdown menu
+            if close:
+                continue
+
+            # Otherwise prepare for adding sub-items
+            current_indent += indent(1, nindent)
+            nav.append("{0}{1}".format(current_indent, div(close=False)))
+            current_indent += indent(1, nindent)
+
+        # Add the dropdown menu item if not already done
+        if os.path.basename(filepath).lower() != "index.html":
+            attrs = {"class": "active"} if filepath == current else {}
+            attrs["href"] = relative_path(filepath, current)
+            a = tag("a", content=nickname, **attrs)
+            nav.append("{0}{1}".format(current_indent, a))
+
+    # Close the last dropdown menu
+    if dropdown_old != "":
+        for _ in range(2):
+            current_indent = current_indent[: -len(indent(1, nindent))]
+            nav.append("{0}</div>".format(current_indent))
+
+    # Close, format, and return the navigation bar
+    current_indent = current_indent[: -len(indent(1, nindent))]
+    nav.append("{0}</nav>".format(current_indent))
+    return "\n".join(nav)
+
+
+if __name__ == "__main__":
+    filepaths = {
+        "index.html": "Home",
+        "dens/index.html": "Solver",
+        "dens/onedim.html": "1D",
+        "dens/twodim.html": "2D",
+        "notebook/index.html": "Notebook",
+        "tests/index.html": "Tests",
+        "tests/comres.html": "Commons",
+        "tests/lib_mathparser.html": "MathParser",
+        "tests/dens.html": "Solver",
+    }
+
+    ## Add or replace the main navigation block to all the files
+
+    for filepath in filepaths:
+        print("\n\nProcessing %s...\n\n" % filepath)
+        print(main_nav(filepaths, filepath, level=3))
