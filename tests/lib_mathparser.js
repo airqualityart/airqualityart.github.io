@@ -1,14 +1,10 @@
-// Tests for the MathParser JavaScript library.
-//
 // Copyright (c) 2025-now Air Quality And Related Topics.
 //
-// This code is licensed under the terms of the 3-clause BSD license (also
-// known as the modified BSD license). The full text of this license can be
-// found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be
-// found in the file named LICENSE.md located at the root of this repository.
+// License: BSD 3-clause "new" or "revised" license (BSD-3-clause).
+//
+// Tests for the MathParser JavaScript library.
 
-
-// numberSubstring
+// numberSubstring ------------------------------------------------------------
 
 TestFunction(
     MathParser.numberSubstring,
@@ -160,7 +156,7 @@ TestFunction(
     "2.21e-3.1",
     "numberSubstring_complex_3");
 
-// string2Number
+// string2Number --------------------------------------------------------------
 
 TestFunction(
     MathParser.string2Number,
@@ -221,5 +217,131 @@ TestFunction(
     ["3e-.2"],
     3 * Math.pow(10, -0.2),
     "string2Number_simple_10");
+
+// MathToken objects (mehod is_opener) ----------------------------------------
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+    "is_opener",
+    [],
+    true,
+    "MathToken.is_opener_01"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 0),
+    "is_opener",
+    [],
+    true,
+    "MathToken.is_opener_02"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
+    "is_opener",
+    [],
+    true,
+    "MathToken.is_opener_03"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0),
+    "is_opener",
+    [],
+    false,
+    "MathToken.is_opener_04"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 0),
+    "is_opener",
+    [],
+    false,
+    "MathToken.is_opener_05"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0),
+    "is_opener",
+    [],
+    false,
+    "MathToken.is_opener_06"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, null, 0),
+    "is_opener",
+    [],
+    false,
+    "MathToken.is_opener_07"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "(", 0),
+    "is_opener",
+    [],
+    false,
+    "MathToken.is_opener_08"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_OP, "[", 0),
+    "is_opener",
+    [],
+    false,
+    "MathToken.is_opener_09"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "{", 0),
+    "is_opener",
+    [],
+    false,
+    "MathToken.is_opener_10"
+);
+
+// MathToken objects (mehod closes) -------------------------------------------
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+    "closes",
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0)],
+    true,
+    "MathToken.closes_01"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 0),
+    "closes",
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 0)],
+    true,
+    "MathToken.closes_02"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
+    "closes",
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0)],
+    true,
+    "MathToken.closes_03"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
+    "closes",
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0)],
+    false,
+    "MathToken.closes_04"
+);
+
+TestObjectMethod(
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
+    "closes",
+    [new MathParser.MathToken(MathParser.MTK_TYPE_OP, "}", 0)],
+    false,
+    "MathToken.closes_05"
+);
+
+// Summary of tests -----------------------------------------------------------
 
 DisplayNumberOFPassedTests();
