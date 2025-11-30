@@ -1,15 +1,12 @@
-// MathParser JavaScript library for AQart's diff. equations numerical solver.
-//
 // Copyright (c) 2025-now Air Quality And Related Topics.
 //
-// This code is licensed under the terms of the 3-clause BSD license (also
-// known as the modified BSD license). The full text of this license can be
-// found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be
-// found in the file named LICENSE.md located at the root of this repository.
+// License: BSD 3-clause "new" or "revised" license (BSD-3-clause).
+//
+// MathParser JavaScript library for AQart's diff. equations numerical solver.
 
 (function(exports) {
 
-    // Some useful regular expression objects
+    // Useful regular expression objects
     var RE_SPACE = new RegExp(/^\s$/);
     var RE_DIGIT = new RegExp(/^[0-9]$/);
     let RE_LETTER = new RegExp(/^([a-z]|[A-Z])$/);
@@ -18,6 +15,22 @@
 
     function numberSubstring(s, i, allow_exponent=true) {
         // Return the substring of s that represents a number starting at s[i].
+        //
+        // Parameters
+        // ----------
+        // s: str
+        //     Character string to analyze.
+        // i: int
+        //     Index in s where a number is supposed to be starting.
+        // allow_exponent: bool
+        //     Whether an exponent is allowed in the number.
+        //
+        // Returns
+        // -------
+        // str | null
+        //     The substring that represents the number, or null if a number
+        //     could not be parsed out of the string s.
+        //
         var n = s.length;
         if (i < 0 || i >= n) return null;
         var found_period = false;
@@ -43,7 +56,19 @@
 
 
     function string2Number(s) {
-        // Return the number represented by character string s.
+        // Convert a string to the corresponding number.
+        //
+        // Parameters
+        // ----------
+        // s: str
+        //     A character string that represents a number.
+        //
+        // Returns
+        // -------
+        // number | null
+        //     The number that corresponds to character string s, or null if
+        //     the string could not be converted to a number.
+        //
         split = s.replace("E", "e").split("e");
         if (split.length > 2) return null;
         out = Number(split[0]);
@@ -59,72 +84,154 @@
     const MTK_TYPE_NEST = "math_token_nester"
 
 
-    function MathToken(type, value) {
+    function MathToken(type, value, index) {
         // Constructor for MathToken instances.
+        //
+        // Parameters
+        // ----------
+        // type: str
+        //     The type of token (cf. the MTK_TYPE_* constants).
+        // value: str
+        //     The value of the token.
+        // index: int
+        //     The index at which this token starts in the character string
+        //     that it belongs to.
+        //
         this.type = type;
         this.value = value;
+        this.index = index;
+    }
+
+
+    MathToken.prototype.toString = function() {
+        // Return the string representation of self.
+        //
+        // Returns
+        // -------
+        // str
+        //     The string representation of self.
+        return (
+            this.value
+            + " (type "
+            + this.type
+            + " at index "
+            + this.index.toString()
+            + ")"
+        )
+    }
+
+
+    MathToken.prototype.is_opener = function() {
+        // Return true iff self is an opening nester.
+        //
+        // Returns
+        // -------
+        // bool
+        //     Whether self is an opening nester.
+        if (this.type == MTK_TYPE_NEST)
+            return this.value == "(" || this.value == "[" || this.value == "{";
+        else
+            return false;
     }
 
 
     MathToken.prototype.closes = function(token) {
         // Return true iff if given token closes self.
-        if (self.type != MTK_TYPE_NEST) return null;
-        if (token.type != MTK_TYPE_NEST) return false;
-        return (this.value == "(" && token.value == ")" ||
-                this.value == "[" && token.value == "]" ||
-                this.value == "{" && token.value == "}");
+        //
+        // Parameters
+        // ----------
+        // token: MathToken
+        //     Math token to test against self.
+        //
+        // Returns
+        // -------
+        // bool | null
+        //     True if given token closes self, false otherwise (null if self
+        //     is not an opening nesting character).
+        //
+        // Notes
+        // -----
+        // This method does not look at the indices of the token, so it can
+        // return true even if given token is before self.
+        //
+        if (! this.is_opener())
+            return null;
+        else if (token.type != MTK_TYPE_NEST)
+            return false;
+        else
+            return (this.value == "(" && token.value == ")" ||
+                    this.value == "[" && token.value == "]" ||
+                    this.value == "{" && token.value == "}");
     }
 
 
-    function lex(s) {
-        // Return the array of MathToken corresponding to given expression.
+    function lexify(s) {
+        // Lexify character string.
+        //
+        // Parameters
+        // ----------
+        // s: str
+        //     The string to lexify.
+        //
+        // Returns
+        // -------
+        // [MathToken] | null
+        //     The lexified version of input character string, or null if the
+        //     string could not be lexify.
         //
         // TODO this function is completely untested!
-        var s = s.trim();
-        const n = s.length;
-        var out = [];
+        const operators = "+-*/^";
+        const nesting_characters = "()[]{}";
+
+        // Ignore space at the start of the character string
         var i = 0;
-        while (i < n) {
+        while (i < n && RE_SPACE.test(s[i])) i += 1;
 
-            var numlike = s[i] == "." || RE_DIGIT.test(s[i]);
-            numlike = numlike || (
-                i == 0 && s[0] == "-" && n > 1 &&
-                (s[1] == "." || RE_DIGIT.test(s[1]))
-            );
+        // Ignore space at the end of the character string
+        var n = s.length - 1;
+        while (n >= 0 && RE_SPACE.test(s[n])) n -= 1;
 
-            if (numlike) {
+        var out = [];
+        while (i <= n) {
+
+            if (s[i] == "." || RE_DIGIT.test(s[i])) {
 
                 sub = numberSubstring(s, i);
-                value = string2Number(sub);
-                if (value === null) return null;
-                out.push(new MathToken(MTK_TYPE_NUM, value))
+                if (sub === null) return null;
+                out.push(new MathToken(MTK_TYPE_NUM, sub, i))
                 i += sub.length;
 
-            } else if ("+-*/^".indexOf(s[i]) >= 0) {
+            } else if (operators.indexOf(s[i]) >= 0) {
 
-                out.push(new MathToken(MTK_TYPE_OP, s[i]))
+                out.push(new MathToken(MTK_TYPE_OP, s[i], i))
                 i += 1;
 
             } else if (RE_LETTER.test(s[i])) {
 
                 var j = i + 1;
-                while (j < n && RE_LETTER.test(s[j])) j++;
+                while (j <= n && RE_LETTER.test(s[j])) j++;
                 var name = s.slice(i, j);
-                out.push(new MathToken(MTK_TYPE_NAME, name))
+                out.push(new MathToken(MTK_TYPE_NAME, name, i))
                 i += name.length;
 
-            } else if ("()[]{}".indexOf(s[i]) >= 0) {
+            } else if (nesting_characters.indexOf(s[i]) >= 0) {
 
-                out.push(new MathToken(MTK_TYPE_NEST, s[i]))
+                out.push(new MathToken(MTK_TYPE_NEST, s[i], i))
+                i += 1;
+
+            } else if (RE_SPACE.test(s[i])) {
+
                 i += 1;
 
             } else {
 
                 return null;
+
             }
         }
         return out;
     }
+
 
     // Predefined math operations
     var MATH_OPS = Object.create(null);
@@ -138,7 +245,7 @@
     MATH_OPS["cos"] = function (left) {return Math.cos(left);};
     MATH_OPS["exp"] = function (left) {return Math.exp(left);};
 
-
+    // Define exports
     exports.numberSubstring = numberSubstring;
     exports.string2Number = string2Number;
     exports.MathToken = MathToken;
@@ -146,7 +253,6 @@
     exports.MTK_TYPE_OP = MTK_TYPE_OP;
     exports.MTK_TYPE_NAME = MTK_TYPE_NAME;
     exports.MTK_TYPE_NEST = MTK_TYPE_NEST;
-    exports.lex = lex;
-
+    exports.lexify = lexify;
 
 })(this.MathParser = Object.create(null));
