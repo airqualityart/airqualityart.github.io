@@ -28,11 +28,15 @@ function PrettyPrint(obj) {
     // Pretty-print given object.
     if (typeof obj !== "object")
         return obj;
-    keys = [];
-    for (key in obj)
-        keys.push(key);
-    strings = keys.sort().map(function (value, index, array) {return value + ": " + PrettyPrint(obj[value])});
-    return "{" + strings.join(", ") + "}";
+    else if (typeof obj.toString === "function")
+        return obj.toString();
+    else {
+        keys = [];
+        for (key in obj)
+            keys.push(key);
+        strings = keys.sort().map(function (value, index, array) {return value + ": " + PrettyPrint(obj[value])});
+        return "{" + strings.join(", ") + "}";
+    }
 }
 
 function ShowTestResult(args, result, answer, header, id, tol) {
