@@ -16,6 +16,10 @@ function arraysAreEqual(array1, array2) {
     for (i = 0; i < n; i++) {
         if (array1[i] instanceof Array && array2[i] instanceof Array) {
             ok = arraysAreEqual(array1[i], array2[i]);
+        } else if (typeof array1[i].equals === "function") {
+            ok = array1[i].equals(array2[i]);
+        } else if (typeof array2[i].equals === "function") {
+            ok = array2[i].equals(array1[i]);
         } else {
             ok = array1[i] == array2[i];
         }

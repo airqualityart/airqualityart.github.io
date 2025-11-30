@@ -342,6 +342,80 @@ TestObjectMethod(
     "MathToken.closes_05"
 );
 
+// lexify ---------------------------------------------------------------------
+
+TestFunction(
+    MathParser.lexify,
+    ["3.14"],
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3.14", 0)],
+    "lexify_01",
+)
+
+TestFunction(
+    MathParser.lexify,
+    ["3.14 / 4"],
+    [
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3.14", 0),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "/", 5),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "4", 7),
+    ],
+    "lexify_02",
+)
+
+TestFunction(
+    MathParser.lexify,
+    ["- 3.14 / my_variable"],
+    [
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "-", 0),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3.14", 2),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "/", 7),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "my_variable", 9),
+    ],
+    "lexify_03",
+)
+
+TestFunction(
+    MathParser.lexify,
+    ["  .14  "],
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NUM, ".14", 2)],
+    "lexify_04",
+)
+
+TestFunction(
+    MathParser.lexify,
+    ["3cos(pi/{10+1}) ^ 4"],
+    [
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3", 0),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "cos", 1),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 4),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "pi", 5),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "/", 7),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 8),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "10", 9),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 11),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "1", 12),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 13),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 14),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "^", 16),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "4", 18),
+    ],
+    "lexify_05",
+)
+
+TestFunction(
+    MathParser.lexify,
+    ["  "],
+    [],
+    "lexify_06",
+)
+
+TestFunction(
+    MathParser.lexify,
+    ["3.1.2"],
+    null,
+    "lexify_07",
+)
+
 // Summary of tests -----------------------------------------------------------
 
 DisplayNumberOFPassedTests();

@@ -110,6 +110,7 @@
         // -------
         // str
         //     The string representation of self.
+        //
         return (
             this.value
             + " (type "
@@ -117,7 +118,31 @@
             + " at index "
             + this.index.toString()
             + ")"
-        )
+        );
+    }
+
+
+    MathToken.prototype.equals = function(other) {
+        // Test equality to other object.
+        //
+        // Parameters
+        // ----------
+        // other: object
+        //     The object to compare to self.
+        //
+        // Returns
+        // -------
+        // str
+        //     Whether given object is equal to self..
+        //
+        return (
+            Object.hasOwn(other, "type")
+            && other.type === this.type
+            && Object.hasOwn(other, "value")
+            && other.value === this.value
+            && Object.hasOwn(other, "index")
+            && other.index === this.index
+        );
     }
 
 
@@ -128,6 +153,7 @@
         // -------
         // bool
         //     Whether self is an opening nester.
+        //
         if (this.type == MTK_TYPE_NEST)
             return this.value == "(" || this.value == "[" || this.value == "{";
         else
@@ -177,18 +203,17 @@
         // -------
         // [MathToken] | null
         //     The lexified version of input character string, or null if the
-        //     string could not be lexify.
+        //     string could not be lexified.
         //
-        // TODO this function is completely untested!
         const operators = "+-*/^";
         const nesting_characters = "()[]{}";
 
         // Ignore space at the start of the character string
         var i = 0;
-        while (i < n && RE_SPACE.test(s[i])) i += 1;
+        var n = s.length - 1;
+        while (i <= n && RE_SPACE.test(s[i])) i += 1;
 
         // Ignore space at the end of the character string
-        var n = s.length - 1;
         while (n >= 0 && RE_SPACE.test(s[n])) n -= 1;
 
         var out = [];
@@ -201,18 +226,18 @@
                 out.push(new MathToken(MTK_TYPE_NUM, sub, i))
                 i += sub.length;
 
+            } else if (s[j] == "_" || RE_LETTER.test(s[i])) {
+
+                var j = i + 1;
+                while (j <= n && (s[j] == "_" || RE_LETTER.test(s[j]))) j++;
+                var name = s.slice(i, j);
+                out.push(new MathToken(MTK_TYPE_NAME, name, i))
+                i += name.length;
+
             } else if (operators.indexOf(s[i]) >= 0) {
 
                 out.push(new MathToken(MTK_TYPE_OP, s[i], i))
                 i += 1;
-
-            } else if (RE_LETTER.test(s[i])) {
-
-                var j = i + 1;
-                while (j <= n && RE_LETTER.test(s[j])) j++;
-                var name = s.slice(i, j);
-                out.push(new MathToken(MTK_TYPE_NAME, name, i))
-                i += name.length;
 
             } else if (nesting_characters.indexOf(s[i]) >= 0) {
 
