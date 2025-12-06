@@ -270,6 +270,137 @@
     MATH_OPS["cos"] = function (left) {return Math.cos(left);};
     MATH_OPS["exp"] = function (left) {return Math.exp(left);};
 
+
+    function MathOperation(type, left, right) {
+        // Constructor for MathOperation instances.
+        //
+        // Parameters
+        // ----------
+        // type: str
+        //     Type of operation.
+        // left: numeric | MathOperation
+        //     The value or left-hand side of the operation.
+        // [right]: numeric | MathOperation
+        //     The right-hand side of the operation.
+        //
+        this.type = type;
+        if (type != "number" && type != "variable") {
+            if (typeof left === "number")
+                var left = new MathOperation("number", left, null);
+            else if (typeof left === "string")
+                var left = new MathOperation("variable", left, null);
+            if (typeof right === "number")
+                var right = new MathOperation("number", right, null);
+            else if (typeof right === "string")
+                var right = new MathOperation("variable", right, null);
+        }
+        this.left = left;
+        this.right = right;
+    }
+
+
+    MathOperation.prototype.unary = function() {
+        // Check if self is unary.
+        //
+        // Returns
+        // -------
+        // bool
+        //     True if self is unary (number or function), false otherwise.
+        //
+        return (
+            this.type == "number"
+            || this.type == "variable"
+            || this.type == "sqrt"
+            || this.type == "sin"
+            || this.type == "cos"
+            || (this.type == "exp")
+        );
+    }
+
+
+    MathOperation.prototype.binary = function() {
+        // Check if self is binary.
+        //
+        // Returns
+        // -------
+        // bool
+        //     True if self is a binary operation, false otherwise.
+        //
+        return ! this.unary();
+    }
+
+
+    MathOperation.prototype.eval = function(variables={}) {
+        // Compute self.
+        //
+        // Parameters
+        // ----------
+        // variables: mapping of names to numerical values
+        //     The values of the variables in the expression.
+        //
+        // Returns
+        // -------
+        // numeric
+        //     The numerical value of the expression.
+        //
+        switch (this.type) {
+        case "number":
+            return this.left;
+        case "variable":
+            return variables[this.left];
+        default:
+            var left = this.left.eval(variables=variables);
+            if (this.binary())
+                var right = this.right.eval(variables=variables);
+            return MATH_OPERATIONS[this.type](left, right);
+        }
+    }
+
+
+    MathOperation.prototype.toString_needs_parentheses = function() {
+        // Check whether string representation of self needs parentheses.
+        //
+        // Returns
+        // -------
+        // bool
+        //     True if string representation of self needs parentheses, false
+        //     otherwise.
+        //
+        return (
+            this.type != "number"
+            && this.type != "variable"
+            && this.binary()
+        );
+    }
+
+
+    MathOperation.prototype.toString = function() {
+        // Return the string representation of self.
+        //
+        // Returns
+        // -------
+        // str
+        //     The string representation of self.
+        //
+        if (this.type == "number")
+            var out = this.left.toString();
+        else if (this.type == "variable")
+            var out = this.left;
+        else if (this.unary())
+            var out = this.type + "(" + this.left.toString() + ")";
+        else {
+            var left = this.left.toString();
+            if (this.left.toString_needs_parentheses())
+                left = "(" + left + ") ";
+            var right = this.right.toString();
+            if (this.right.toString_needs_parentheses())
+                right = "(" + right + ") ";
+            var out = left + " " + this.type + " " + right;
+        }
+        return out;
+    }
+
+
     // Define exports
     exports.numberSubstring = numberSubstring;
     exports.string2Number = string2Number;
@@ -279,5 +410,6 @@
     exports.MTK_TYPE_NAME = MTK_TYPE_NAME;
     exports.MTK_TYPE_NEST = MTK_TYPE_NEST;
     exports.lexify = lexify;
+    exports.MathOperation = MathOperation;
 
 })(this.MathParser = Object.create(null));

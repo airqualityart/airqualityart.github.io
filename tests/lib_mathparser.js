@@ -416,6 +416,435 @@ TestFunction(
     "lexify_07",
 )
 
+// MathOperation objects (methods unary and binary) ---------------------------
+
+TestObjectMethod(
+    new MathParser.MathOperation("number", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_number"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("number", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_number"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("+", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_add"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("+", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_add"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("-", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_sub"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("-", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_sub"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("*", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_mul"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("*", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_mul"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("/", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_div"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("/", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_div"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("^", 2, 5),
+    "unary",
+    [],
+    false,
+    "MathOperation.unary_pow"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("^", 2, 5),
+    "binary",
+    [],
+    true,
+    "MathOperation.binary_pow"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sqrt", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_sqrt"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sqrt", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_sqrt"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sin", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_sin"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sin", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_sin"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("cos", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_cos"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("cos", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_cos"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("exp", 125),
+    "unary",
+    [],
+    true,
+    "MathOperation.unary_exp"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("exp", 125),
+    "binary",
+    [],
+    false,
+    "MathOperation.binary_exp"
+)
+
+// MathOperation objects (method eval) ----------------------------------------
+
+TestObjectMethod(
+    new MathParser.MathOperation("number", 125),
+    "eval",
+    [],
+    125,
+    "MathOperation.eval_number_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("+", 2, 2),
+    "eval",
+    [],
+    4,
+    "MathOperation.eval_add_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("-", 2, 5),
+    "eval",
+    [],
+    -3,
+    "MathOperation.eval_sub_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("*", 7, 5),
+    "eval",
+    [],
+    35,
+    "MathOperation.eval_mul_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("*", 7, -5),
+    "eval",
+    [],
+    -35,
+    "MathOperation.eval_mul_2"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("/", 18, 6),
+    "eval",
+    [],
+    3,
+    "MathOperation.eval_div_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("^", 2, 5),
+    "eval",
+    [],
+    32,
+    "MathOperation.eval_pow_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("^", 49, 0.5),
+    "eval",
+    [],
+    7,
+    "MathOperation.eval_pow_2"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sqrt", 49, null),
+    "eval",
+    [],
+    7,
+    "MathOperation.eval_sqrt_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sin", 0, null),
+    "eval",
+    [],
+    0,
+    "MathOperation.eval_sin_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sin", Math.PI/2, null),
+    "eval",
+    [],
+    1,
+    "MathOperation.eval_sin_2"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sin", Math.PI/6, null),
+    "eval",
+    [],
+    0.5,
+    "MathOperation.eval_sin_3",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("sin", Math.PI/3, null),
+    "eval",
+    [],
+    Math.sqrt(3)/2,
+    "MathOperation.eval_sin_4",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("cos", 0, null),
+    "eval",
+    [],
+    1,
+    "MathOperation.eval_cos_1"
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("cos", Math.PI/2, null),
+    "eval",
+    [],
+    0,
+    "MathOperation.eval_cos_2",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("cos", Math.PI/6, null),
+    "eval",
+    [],
+    Math.sqrt(3)/2,
+    "MathOperation.eval_cos_3",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("cos", Math.PI/3, null),
+    "eval",
+    [],
+    0.5,
+    "MathOperation.eval_cos_4",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("exp", 0, null),
+    "eval",
+    [],
+    1,
+    "MathOperation.eval_exp_1",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("exp", 10, null),
+    "eval",
+    [],
+    Math.exp(10),
+    "MathOperation.eval_exp_2",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("exp", -10, null),
+    "eval",
+    [],
+    Math.exp(-10),
+    "MathOperation.eval_exp_3",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("variable", "x"),
+    "eval",
+    [{x: 5}],
+    5,
+    "MathOperation.eval_variables_1",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("-", "x", 3),
+    "eval",
+    [{x: 10}],
+    7,
+    "MathOperation.eval_variables_2",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("+", "x", "y"),
+    "eval",
+    [{x: 5, y: 20}],
+    25,
+    "MathOperation.eval_variables_3",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation("cos", "theta"),
+    "eval",
+    [{theta: Math.PI/6}],
+    Math.sqrt(3)/2,
+    "MathOperation.eval_variables_4",
+    1e-15,
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation(
+        "+",
+        2,
+        new MathParser.MathOperation("-", 10, 4),
+    ),
+    "eval",
+    [],
+    8,
+    "MathOperation.eval_nested_1",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation(
+        "*",
+        new MathParser.MathOperation("+", -3, 7),
+        new MathParser.MathOperation("-", 10, 4),
+    ),
+    "eval",
+    [],
+    24,
+    "MathOperation.eval_nested_2",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation(
+        "cos",
+        new MathParser.MathOperation("/", Math.PI, 3),
+    ),
+    "eval",
+    [],
+    0.5,
+    "MathOperation.eval_nested_3",
+    1e-15
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation(
+        "+",
+        new MathParser.MathOperation(
+            "*",
+            new MathParser.MathOperation("cos", Math.PI/3),
+            10,
+        ),
+        4,
+    ),
+    "eval",
+    [],
+    9,
+    "MathOperation.eval_nested_4",
+)
+
+TestObjectMethod(
+    new MathParser.MathOperation(
+        "+",
+        new MathParser.MathOperation(
+            "*",
+            new MathParser.MathOperation("cos", "angle"),
+            10,
+        ),
+        4,
+    ),
+    "eval",
+    [{angle: Math.PI/3}],
+    9,
+    "MathOperation.eval_nested_5",
+)
+
 // Summary of tests -----------------------------------------------------------
 
 DisplayNumberOFPassedTests();
