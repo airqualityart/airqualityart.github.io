@@ -1,16 +1,27 @@
-// Common JavaScript resources for AQart's web page's test-driven programming.
-//
 // Copyright (c) 2023-now Air Quality And Related Topics.
 //
-// This code is licensed under the terms of the 3-clause BSD license (also known as the modified BSD license). The full
-// text of this license can be found at https://directory.fsf.org/wiki/License:BSD-3-Clause. It can also be found in
-// the file named LICENSE.md located at the root of this repository.
+// License: BSD 3-clause "new" or "revised" license (BSD-3-clause).
+//
+// Common JavaScript resources for AQart's web page's test-driven programming.
 
 let n_tests_total = 0;
 let n_tests_passed = 0;
 
 function arraysAreEqual(array1, array2) {
-    // Return true iff the two given arrays are equal.
+    // Test equality between two arrays.
+    //
+    // Parameters
+    // ----------
+    // array1: array of anything
+    //     First array to compare.
+    // array2: array of anything
+    //     Second array to compare.
+    //
+    // Returns
+    // -------
+    // bool
+    //     True if array1 and array2 are equal, false otherwise.
+    //
     n = array1.length;
     if (array2.length != n) return false;
     for (i = 0; i < n; i++) {
@@ -30,17 +41,33 @@ function arraysAreEqual(array1, array2) {
 
 function PrettyPrint(obj) {
     // Pretty-print given object.
+    //
+    // Parameters
+    // ----------
+    // obj: anything
+    //     Object to pretty print.
+    //
+    // Returns
+    // -------
+    // str
+    //     The pretty-printed version of input object.
+    //
     if (typeof obj !== "object")
-        return obj;
+        out = obj;
     else if (typeof obj.toString === "function")
-        return obj.toString();
+        out = obj.toString();
     else {
         keys = [];
         for (key in obj)
             keys.push(key);
-        strings = keys.sort().map(function (value, index, array) {return value + ": " + PrettyPrint(obj[value])});
-        return "{" + strings.join(", ") + "}";
+        strings = keys.sort().map(
+            function (value, index, array) {
+                return value + ": " + PrettyPrint(obj[value])
+            }
+        );
+        out = "{" + strings.join(", ") + "}";
     }
+    return out;
 }
 
 function ShowTestResult(args, result, answer, header, id, tol) {
