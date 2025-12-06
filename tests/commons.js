@@ -54,7 +54,8 @@ function PrettyPrint(obj) {
     //
     if (typeof obj !== "object")
         out = obj;
-    else if (typeof obj.toString === "function")
+    else if (typeof obj.toString === "function"
+             && obj.toString !== Object.prototype.toString)
         out = obj.toString();
     else {
         keys = [];
