@@ -146,19 +146,25 @@
     }
 
 
-    MathToken.prototype.is_opener = function() {
-        // Return true iff self is an opening nester.
-        //
-        // Returns
-        // -------
-        // bool
-        //     Whether self is an opening nester.
-        //
-        if (this.type == MTK_TYPE_NEST)
-            return this.value == "(" || this.value == "[" || this.value == "{";
-        else
-            return false;
-    }
+    Object.defineProperty(MathToken.prototype, "is_opener", {
+        get: function() {
+            // Return true iff self is an opening nester.
+            //
+            // Returns
+            // -------
+            // bool
+            //     Whether self is an opening nester.
+            //
+            if (this.type == MTK_TYPE_NEST)
+                return (
+                    this.value == "("
+                    || this.value == "["
+                    || this.value == "{"
+                );
+            else
+                return false;
+        }
+    });
 
 
     MathToken.prototype.closes = function(token) {
@@ -180,7 +186,7 @@
         // This method does not look at the indices of the token, so it can
         // return true even if given token is before self.
         //
-        if (! this.is_opener())
+        if (! this.is_opener)
             return null;
         else if (token.type != MTK_TYPE_NEST)
             return false;
@@ -299,35 +305,39 @@
     }
 
 
-    MathOperation.prototype.unary = function() {
-        // Check if self is unary.
-        //
-        // Returns
-        // -------
-        // bool
-        //     True if self is unary (number or function), false otherwise.
-        //
-        return (
-            this.type == "number"
-            || this.type == "variable"
-            || this.type == "sqrt"
-            || this.type == "sin"
-            || this.type == "cos"
-            || (this.type == "exp")
-        );
-    }
+    Object.defineProperty(MathOperation.prototype, "unary", {
+        get: function() {
+            // Check if self is unary.
+            //
+            // Returns
+            // -------
+            // bool
+            //     True if self is unary (number or function), false otherwise.
+            //
+            return (
+                this.type == "number"
+                || this.type == "variable"
+                || this.type == "sqrt"
+                || this.type == "sin"
+                || this.type == "cos"
+                || (this.type == "exp")
+            );
+        }
+    });
 
 
-    MathOperation.prototype.binary = function() {
-        // Check if self is binary.
-        //
-        // Returns
-        // -------
-        // bool
-        //     True if self is a binary operation, false otherwise.
-        //
-        return ! this.unary();
-    }
+    Object.defineProperty(MathOperation.prototype, "binary", {
+        get: function() {
+            // Check if self is binary.
+            //
+            // Returns
+            // -------
+            // bool
+            //     True if self is a binary operation, false otherwise.
+            //
+            return ! this.unary;
+        }
+    });
 
 
     MathOperation.prototype.eval = function(variables={}) {
@@ -350,28 +360,33 @@
             return variables[this.left];
         default:
             var left = this.left.eval(variables=variables);
-            if (this.binary())
+            if (this.binary)
                 var right = this.right.eval(variables=variables);
             return MATH_OPERATIONS[this.type](left, right);
         }
     }
 
 
-    MathOperation.prototype.toString_needs_parentheses = function() {
-        // Check whether string representation of self needs parentheses.
-        //
-        // Returns
-        // -------
-        // bool
-        //     True if string representation of self needs parentheses, false
-        //     otherwise.
-        //
-        return (
-            this.type != "number"
-            && this.type != "variable"
-            && this.binary()
-        );
-    }
+    Object.defineProperty(
+        MathOperation.prototype,
+        "toString_needs_parentheses",
+        {
+            get: function() {
+                // Check if string representation of self needs parentheses.
+                //
+                // Returns
+                // -------
+                // bool
+                //     True if string representation of self needs parentheses,
+                //     false otherwise.
+                //
+                return (
+                    this.type != "number"
+                    && this.type != "variable"
+                    && this.binary
+                );
+            }
+        });
 
 
     MathOperation.prototype.toString = function() {
@@ -386,14 +401,14 @@
             var out = this.left.toString();
         else if (this.type == "variable")
             var out = this.left;
-        else if (this.unary())
+        else if (this.unary)
             var out = this.type + "(" + this.left.toString() + ")";
         else {
             var left = this.left.toString();
-            if (this.left.toString_needs_parentheses())
+            if (this.left.toString_needs_parentheses)
                 left = "(" + left + ") ";
             var right = this.right.toString();
-            if (this.right.toString_needs_parentheses())
+            if (this.right.toString_needs_parentheses)
                 right = "(" + right + ") ";
             var out = left + " " + this.type + " " + right;
         }

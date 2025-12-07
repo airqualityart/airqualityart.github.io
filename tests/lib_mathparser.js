@@ -218,84 +218,74 @@ TestFunction(
     3 * Math.pow(10, -0.2),
     "string2Number_simple_10");
 
-// MathToken objects (mehod is_opener) ----------------------------------------
+// MathToken objects (property is_opener) -------------------------------------
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
     "is_opener",
-    [],
     true,
     "MathToken.is_opener_01"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 0),
     "is_opener",
-    [],
     true,
     "MathToken.is_opener_02"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
     "is_opener",
-    [],
     true,
     "MathToken.is_opener_03"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0),
     "is_opener",
-    [],
     false,
     "MathToken.is_opener_04"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 0),
     "is_opener",
-    [],
     false,
     "MathToken.is_opener_05"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0),
     "is_opener",
-    [],
     false,
     "MathToken.is_opener_06"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, null, 0),
     "is_opener",
-    [],
     false,
     "MathToken.is_opener_07"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "(", 0),
     "is_opener",
-    [],
     false,
     "MathToken.is_opener_08"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_OP, "[", 0),
     "is_opener",
-    [],
     false,
     "MathToken.is_opener_09"
 );
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "{", 0),
     "is_opener",
-    [],
     false,
     "MathToken.is_opener_10"
 );
@@ -416,164 +406,144 @@ TestFunction(
     "lexify_07",
 )
 
-// MathOperation objects (methods unary and binary) ---------------------------
+// MathOperation objects (properties unary and binary) ------------------------
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("number", 125),
     "unary",
-    [],
     true,
     "MathOperation.unary_number"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("number", 125),
     "binary",
-    [],
     false,
     "MathOperation.binary_number"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("+", 2, 5),
     "unary",
-    [],
     false,
     "MathOperation.unary_add"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("+", 2, 5),
     "binary",
-    [],
     true,
     "MathOperation.binary_add"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("-", 2, 5),
     "unary",
-    [],
     false,
     "MathOperation.unary_sub"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("-", 2, 5),
     "binary",
-    [],
     true,
     "MathOperation.binary_sub"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("*", 2, 5),
     "unary",
-    [],
     false,
     "MathOperation.unary_mul"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("*", 2, 5),
     "binary",
-    [],
     true,
     "MathOperation.binary_mul"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("/", 2, 5),
     "unary",
-    [],
     false,
     "MathOperation.unary_div"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("/", 2, 5),
     "binary",
-    [],
     true,
     "MathOperation.binary_div"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("^", 2, 5),
     "unary",
-    [],
     false,
     "MathOperation.unary_pow"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("^", 2, 5),
     "binary",
-    [],
     true,
     "MathOperation.binary_pow"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("sqrt", 125),
     "unary",
-    [],
     true,
     "MathOperation.unary_sqrt"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("sqrt", 125),
     "binary",
-    [],
     false,
     "MathOperation.binary_sqrt"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("sin", 125),
     "unary",
-    [],
     true,
     "MathOperation.unary_sin"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("sin", 125),
     "binary",
-    [],
     false,
     "MathOperation.binary_sin"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("cos", 125),
     "unary",
-    [],
     true,
     "MathOperation.unary_cos"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("cos", 125),
     "binary",
-    [],
     false,
     "MathOperation.binary_cos"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("exp", 125),
     "unary",
-    [],
     true,
     "MathOperation.unary_exp"
 )
 
-TestObjectMethod(
+TestObjectProperty(
     new MathParser.MathOperation("exp", 125),
     "binary",
-    [],
     false,
     "MathOperation.binary_exp"
 )
