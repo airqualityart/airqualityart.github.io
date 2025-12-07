@@ -167,6 +167,27 @@
     });
 
 
+    Object.defineProperty(MathToken.prototype, "is_closer", {
+        get: function() {
+            // Return true iff self is a closing nester.
+            //
+            // Returns
+            // -------
+            // bool
+            //     Whether self is an closing nester.
+            //
+            if (this.type == MTK_TYPE_NEST)
+                return (
+                    this.value == ")"
+                    || this.value == "]"
+                    || this.value == "}"
+                );
+            else
+                return false;
+        }
+    });
+
+
     MathToken.prototype.closes = function(token) {
         // Return true iff if given token closes self.
         //
