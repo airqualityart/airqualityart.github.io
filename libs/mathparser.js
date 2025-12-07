@@ -146,7 +146,7 @@
     }
 
 
-    Object.defineProperty(MathToken.prototype, "is_opener", {
+    Object.defineProperty(MathToken.prototype, "isOpener", {
         get: function() {
             // Return true iff self is an opening nester.
             //
@@ -167,7 +167,7 @@
     });
 
 
-    Object.defineProperty(MathToken.prototype, "is_closer", {
+    Object.defineProperty(MathToken.prototype, "isCloser", {
         get: function() {
             // Return true iff self is a closing nester.
             //
@@ -206,7 +206,7 @@
         // This method does not look at the indices of the token, so it can
         // return true even if self is before given token.
         //
-        if (! token.is_opener || ! this.is_closer)
+        if (! token.isOpener || ! this.isCloser)
             return false;
         else
             return (token.value == "(" && this.value == ")" ||
@@ -452,14 +452,14 @@
         //     it could not be found, or if expr[at] is not an opening nester).
         //
         var n = expr.length;
-        if (at < 0 || at >= n || ! expr[at].is_opener)
+        if (at < 0 || at >= n || ! expr[at].isOpener)
             return null;
         var i = at + 1;
         var nesters = [expr[at]];
         while (i < n) {
-            if (expr[i].is_opener)
+            if (expr[i].isOpener)
                 nesters.push(expr[i]);
-            else if (expr[i].is_closer) {
+            else if (expr[i].isCloser) {
                 if (! expr[i].closes(nesters[nesters.length-1]))
                     return null;
                 else if (nesters.length == 1)

@@ -218,148 +218,148 @@ TestFunction(
     3 * Math.pow(10, -0.2),
     "string2Number_simple_10");
 
-// MathToken objects (property is_opener) -------------------------------------
+// MathToken objects (property isOpener) -------------------------------------
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
-    "is_opener",
+    "isOpener",
     true,
-    "MathToken.is_opener_01"
+    "MathToken.isOpener_01"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 0),
-    "is_opener",
+    "isOpener",
     true,
-    "MathToken.is_opener_02"
+    "MathToken.isOpener_02"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
-    "is_opener",
+    "isOpener",
     true,
-    "MathToken.is_opener_03"
+    "MathToken.isOpener_03"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0),
-    "is_opener",
+    "isOpener",
     false,
-    "MathToken.is_opener_04"
+    "MathToken.isOpener_04"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 0),
-    "is_opener",
+    "isOpener",
     false,
-    "MathToken.is_opener_05"
+    "MathToken.isOpener_05"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0),
-    "is_opener",
+    "isOpener",
     false,
-    "MathToken.is_opener_06"
+    "MathToken.isOpener_06"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, null, 0),
-    "is_opener",
+    "isOpener",
     false,
-    "MathToken.is_opener_07"
+    "MathToken.isOpener_07"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "(", 0),
-    "is_opener",
+    "isOpener",
     false,
-    "MathToken.is_opener_08"
+    "MathToken.isOpener_08"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_OP, "[", 0),
-    "is_opener",
+    "isOpener",
     false,
-    "MathToken.is_opener_09"
+    "MathToken.isOpener_09"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "{", 0),
-    "is_opener",
+    "isOpener",
     false,
-    "MathToken.is_opener_10"
+    "MathToken.isOpener_10"
 );
 
-// MathToken objects (property is_closer) -------------------------------------
+// MathToken objects (property isCloser) -------------------------------------
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0),
-    "is_closer",
+    "isCloser",
     true,
-    "MathToken.is_closer_01"
+    "MathToken.isCloser_01"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 0),
-    "is_closer",
+    "isCloser",
     true,
-    "MathToken.is_closer_02"
+    "MathToken.isCloser_02"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0),
-    "is_closer",
+    "isCloser",
     true,
-    "MathToken.is_closer_03"
+    "MathToken.isCloser_03"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
-    "is_closer",
+    "isCloser",
     false,
-    "MathToken.is_closer_04"
+    "MathToken.isCloser_04"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 0),
-    "is_closer",
+    "isCloser",
     false,
-    "MathToken.is_closer_05"
+    "MathToken.isCloser_05"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
-    "is_closer",
+    "isCloser",
     false,
-    "MathToken.is_closer_06"
+    "MathToken.isCloser_06"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NEST, null, 0),
-    "is_closer",
+    "isCloser",
     false,
-    "MathToken.is_closer_07"
+    "MathToken.isCloser_07"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NUM, ")", 0),
-    "is_closer",
+    "isCloser",
     false,
-    "MathToken.is_closer_08"
+    "MathToken.isCloser_08"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_OP, "]", 0),
-    "is_closer",
+    "isCloser",
     false,
-    "MathToken.is_closer_09"
+    "MathToken.isCloser_09"
 );
 
 TestObjectProperty(
     new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "}", 0),
-    "is_closer",
+    "isCloser",
     false,
-    "MathToken.is_closer_10"
+    "MathToken.isCloser_10"
 );
 
 // MathToken objects (method closes) ------------------------------------------
