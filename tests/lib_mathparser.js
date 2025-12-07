@@ -4,7 +4,7 @@
 //
 // Tests for the MathParser JavaScript library.
 
-// numberSubstring ------------------------------------------------------------
+// Function numberSubstring ---------------------------------------------------
 
 TestFunction(
     MathParser.numberSubstring,
@@ -156,7 +156,7 @@ TestFunction(
     "2.21e-3.1",
     "numberSubstring_complex_3");
 
-// string2Number --------------------------------------------------------------
+// Function string2Number -----------------------------------------------------
 
 TestFunction(
     MathParser.string2Number,
@@ -365,33 +365,33 @@ TestObjectProperty(
 // MathToken objects (method closes) ------------------------------------------
 
 TestObjectMethod(
-    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0),
     "closes",
-    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0)],
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0)],
     true,
     "MathToken.closes_01"
 );
 
 TestObjectMethod(
-    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 0),
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 0),
     "closes",
-    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 0)],
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 0)],
     true,
     "MathToken.closes_02"
 );
 
 TestObjectMethod(
-    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0),
     "closes",
-    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0)],
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0)],
     true,
     "MathToken.closes_03"
 );
 
 TestObjectMethod(
-    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 0),
+    new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 0),
     "closes",
-    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 0)],
+    [new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0)],
     false,
     "MathToken.closes_04"
 );
@@ -404,7 +404,7 @@ TestObjectMethod(
     "MathToken.closes_05"
 );
 
-// lexify ---------------------------------------------------------------------
+// Function lexify ------------------------------------------------------------
 
 TestFunction(
     MathParser.lexify,
@@ -886,6 +886,92 @@ TestObjectMethod(
     9,
     "MathOperation.eval_nested_5",
 )
+
+// Function closingNester -----------------------------------------------------
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("1 * (2 + 4) / 5"), 2],
+    6,
+    "closingNester_simple_1",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("(2) / 5"), 0],
+    2,
+    "closingNester_simple_2",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("10 * {2 + 4 / 5}"), 2],
+    8,
+    "closingNester_simple_3",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("hello [to the] world"), 1],
+    4,
+    "closingNester_simple_4",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("(1.5 + 5 * {2 + 3 * hello})"), 5],
+    11,
+    "closingNester_nested_1",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("(1.5 + 5 * (2 + 3 * hello))"), 5],
+    11,
+    "closingNester_nested_2",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("(1.5 + 5 * (2 + 3 * hello)) + 10"), 0],
+    12,
+    "closingNester_nested_3",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("((1.5) + (()) + ([5] * (2 + 3 * hello))) + 10"), 0],
+    23,
+    "closingNester_nested_4",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("hello world"), 0],
+    null,
+    "closingNester_null_1",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("hello world"), 100],
+    null,
+    "closingNester_null_2",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("(hello world)"), -1],
+    null,
+    "closingNester_null_3",
+);
+
+TestFunction(
+    MathParser.closingNester,
+    [MathParser.lexify("hello( world"), 1],
+    null,
+    "closingNester_null_4",
+);
 
 // Summary of tests -----------------------------------------------------------
 

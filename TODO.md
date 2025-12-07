@@ -1,0 +1,2 @@
+ - Homogeneize names of functions, methods, properties, etc. (choose between semiCamelCase and using_undescores).
+ - The unit tests of closingNester use function lexify to process the input, so they are not strictly speaking unit tests. Fix that.
