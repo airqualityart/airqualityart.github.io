@@ -965,56 +965,166 @@ TestFunction(
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("(1.5 + 5 * {2 + 3 * hello})"), 5],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "1.5", 1),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 5),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5", 7),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 9),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{", 11),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "2", 12),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 14),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3", 16),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 18),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 20),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}", 25),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 26),
+        ],
+        5,
+    ],
     11,
     "closingNester_nested_1",
 );
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("(1.5 + 5 * (2 + 3 * hello))"), 5],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "1.5", 1),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 5),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5", 7),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 9),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 11),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "2", 12),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 14),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3", 16),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 18),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 20),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 25),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 26),
+        ],
+        5,
+    ],
     11,
     "closingNester_nested_2",
 );
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("(1.5 + 5 * (2 + 3 * hello)) + 10"), 0],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "1.5", 1),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 5),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5", 7),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 9),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 11),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "2", 12),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 14),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3", 16),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 18),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 20),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 25),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 26),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 28),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "10", 30),
+        ],
+        0,
+    ],
     12,
     "closingNester_nested_3",
 );
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("((1.5) + (()) + ([5] * (2 + 3 * hello))) + 10"), 0],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 1),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "1.5", 2),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 5),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 7),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 9),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 10),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 11),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 12),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 14),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 16),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "[", 17),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5", 18),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]", 19),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 21),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 23),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "2", 24),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 26),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3", 28),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*", 30),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 32),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 37),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 38),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 39),
+            new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+", 41),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "10", 43),
+        ],
+        0,
+    ],
     23,
     "closingNester_nested_4",
 );
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("hello world"), 0],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "world", 6),
+        ],
+        0,
+    ],
     null,
     "closingNester_null_1",
 );
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("hello world"), 100],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "world", 6),
+        ],
+        100,
+    ],
     null,
     "closingNester_null_2",
 );
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("(hello world)"), -1],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 1),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "world", 7),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")", 12),
+        ],
+        -1,
+    ],
     null,
     "closingNester_null_3",
 );
 
 TestFunction(
     MathParser.closingNester,
-    [MathParser.lexify("hello( world"), 1],
+    [
+        [
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "hello", 0),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "(", 5),
+            new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "world", 7),
+        ],
+        1,
+    ],
     null,
     "closingNester_null_4",
 );

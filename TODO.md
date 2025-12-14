@@ -1,4 +1,3 @@
- - The unit tests of closingNester use function lexify to process the input, so they are not strictly speaking unit tests. Fix that.
  - Fix code formatting in tests/commons.js.
  - Add docstrings in tests/commons.js.
  - Separate unit test cases of MathOperation.unary and MathOperation.binary into two separate sections.
