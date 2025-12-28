@@ -415,7 +415,7 @@
             var left = this.left.eval(variables=variables);
             if (this.binary)
                 var right = this.right.eval(variables=variables);
-            return MATH_OPERATIONS[this.type](left, right);
+            return MATH_OPS[this.type](left, right);
         }
     }
 

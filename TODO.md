@@ -2,3 +2,4 @@
  - Add docstrings in tests/commons.js.
  - Separate unit test cases of MathOperation.unary and MathOperation.binary into two separate sections.
  - Add unit tests for fix_lexed_expression
+ - Add unit tests for tagify
