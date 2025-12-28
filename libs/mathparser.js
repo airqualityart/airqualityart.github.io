@@ -99,7 +99,10 @@
         //
         this.type = type;
         this.value = value;
-        this.index = index;
+        if (index === undefined)
+            this.index = null;
+        else
+            this.index = index;
     }
 
 
@@ -111,14 +114,9 @@
         // str
         //     The string representation of self.
         //
-        return (
-            this.value
-            + " (type "
-            + this.type
-            + " at index "
-            + this.index.toString()
-            + ")"
-        );
+        var out = this.value + " (type " + this.type;
+        if (this.index !== null) out += " at index " + this.index.toString();
+        return out + ")";
     }
 
 
@@ -310,16 +308,19 @@
         this.type = type;
         if (type != "number" && type != "variable") {
             if (typeof left === "number")
-                var left = new MathOperation("number", left, null);
+                var left = new MathOperation("number", left);
             else if (typeof left === "string")
-                var left = new MathOperation("variable", left, null);
+                var left = new MathOperation("variable", left);
             if (typeof right === "number")
-                var right = new MathOperation("number", right, null);
+                var right = new MathOperation("number", right);
             else if (typeof right === "string")
-                var right = new MathOperation("variable", right, null);
+                var right = new MathOperation("variable", right);
         }
         this.left = left;
-        this.right = right;
+        if (right === undefined)
+            this.right = null;
+        else
+            this.right = right;
     }
 
 
@@ -356,6 +357,40 @@
             return ! this.unary;
         }
     });
+
+
+    MathOperation.prototype.equals = function(other) {
+        // Test equality to other object.
+        //
+        // Parameters
+        // ----------
+        // other: object
+        //     The object to compare to self.
+        //
+        // Returns
+        // -------
+        // str
+        //     Whether given object is equal to self..
+        //
+        if (other === null) return false;
+        var ok = (
+            Object.hasOwn(other, "type")
+            && other.type === this.type
+            && Object.hasOwn(other, "left")
+            && Object.hasOwn(other, "right")
+        );
+        if (typeof this.left === "number" || typeof this.left === "string")
+            ok = ok && other.left === this.left;
+        else
+            ok = ok && this.left.equals(other.left);
+        if (typeof this.right === "number" || typeof this.right === "string")
+            ok = ok && other.right === this.right;
+        else if (this.right === null)
+            ok = ok && other.right === null;
+        else
+            ok = ok && this.right.equals(other.right);
+        return ok;
+    }
 
 
     MathOperation.prototype.eval = function(variables={}) {
@@ -452,7 +487,7 @@
         //     it could not be found, or if expr[at] is not an opening nester).
         //
         var n = expr.length;
-        if (at < 0 || at >= n || ! expr[at].isOpener)
+        if (at < 0 || at >= (n - 1) || ! expr[at].isOpener)
             return null;
         var i = at + 1;
         var nesters = [expr[at]];
@@ -473,6 +508,119 @@
     }
 
 
+    function fix_lexed_expression(lexed) {
+        // Fix given lexed expression.
+        //
+        // Here, fixing a lexed expression consists in removing useless
+        // over-encompassing nesters, if any, and replacing the leading
+        // unary minus sign, if any, by "-1 * ".
+        //
+        // Parameters
+        // ----------
+        // lexed: [MathToken]
+        //    The lexed expression to fix.
+        //
+        // Returns
+        // -------
+        // [MathToken] | null
+        //     A copy of input the array, modified if deemed necessary (or null
+        //     if any problem was detected in input array).
+        //
+        const out = lexed.slice();
+        while (closingNester(out, 0) == out.length - 1) {
+            out.shift();
+            out.pop();
+        }
+        var n = out.length;
+        if (n == 0 || out[0].type != MTK_TYPE_OP || out[0].value != "-")
+            return out;
+        else if (n < 2)
+            return null;
+        else {
+            const acceptable = [MTK_TYPE_NUM, MTK_TYPE_NAME, MTK_TYPE_NEST];
+            if (! acceptable.includes(out[1].type)) return null;
+            out.splice(
+                0,
+                1,
+                new MathToken(MTK_TYPE_NUM, "-1"),
+                new MathToken(MTK_TYPE_OP, "*"),
+            );
+            return out;
+        }
+    }
+
+
+    function parse(lexed) {
+        // Parse given lexed expression.
+        //
+        // Parameters
+        // ----------
+        // lexed: [MathToken] | null
+        //     The expression to parse, which must already have been lexified.
+        //
+        // Returns
+        // -------
+        // MathOperation | null
+        //     The parsed expression (or null if any error during parsing).
+        //
+        if (lexed === null) return null;
+        const expr = fix_lexed_expression(lexed);
+        if (expr === null) return null;
+
+        // Condition to stop the recursion: there is one or fewer math token
+        var n = expr.length;
+        if (n == 0)
+            return null;
+        else if (n == 1) {
+            if (expr[0].type == MTK_TYPE_NUM) {
+                var value = string2Number(expr[0].value);
+                return new MathOperation("number", value);
+            } else if (expr[0].type == MTK_TYPE_NAME) {
+                if (expr[0].value in MATH_OPS)
+                    return null;
+                else
+                    return new MathOperation("variable", expr[0].value);
+            }
+            return null;
+        }
+
+        // Special case: function call that spans the entire expression
+        if (expr[0].type == MTK_TYPE_NAME
+            && expr[0].value in MATH_OPS
+            && closingNester(expr, 1) == n-1)
+            return new MathOperation(expr[0].value, parse(expr.slice(2, n-1)));
+
+        // Split around operators, in reverse order of priority
+        const operators_by_priority = ["+-", "*/", "^"];
+        for (var i = 0; i < operators_by_priority.length; i++) {
+            var j = 0;
+            while (j < n) {
+                var k = closingNester(expr, j);
+                if (k !== null) {
+                    j = k + 1;
+                    continue;
+                }
+                split = (
+                    expr[j].type == MTK_TYPE_OP
+                    && operators_by_priority[i].includes(expr[j].value)
+                )
+                if (split) {
+                    var left = parse(expr.slice(0, j));
+                    if (left === null) return null;
+                    var right = parse(expr.slice(j+1));
+                    if (right === null) return null;
+                    return new MathOperation(expr[j].value, left, right);
+                }
+                j += 1;
+            }
+        }
+
+        // If we reach this point then the expression is not parsable
+        return null;
+
+    }
+
+
     // Define exports
     exports.numberSubstring = numberSubstring;
     exports.string2Number = string2Number;
@@ -484,5 +632,6 @@
     exports.lexify = lexify;
     exports.MathOperation = MathOperation;
     exports.closingNester = closingNester;
+    exports.parse = parse;
 
 })(this.MathParser = Object.create(null));

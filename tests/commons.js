@@ -87,7 +87,9 @@ function ShowTestResult(args, result, answer, header, id, tol) {
             content += Tagify("Argument " + (i+1) + " (" + (typeof args[i]) + ") = " + PrettyPrint(args[i]), "div");
     content += Tagify("Expected answer (" + (typeof answer) + ") = " + answer, "div");
     if (tol === undefined)
-        if (result instanceof Array && answer instanceof Array) {
+        if (answer !== null && typeof answer.equals === "function") {
+            var ok = answer.equals(result);
+        } else if (result instanceof Array && answer instanceof Array) {
             var ok = arraysAreEqual(result, answer);
         } else {
             var ok = (result === answer);

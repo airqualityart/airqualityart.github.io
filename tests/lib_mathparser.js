@@ -1129,6 +1129,295 @@ TestFunction(
     "closingNester_null_4",
 );
 
+// Function parse -------------------------------------------------------------
+
+TestFunction(
+    MathParser.parse,
+    [[new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12")]],
+    new MathParser.MathOperation("number", 12),
+    "parse_basic_1",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "-12")]],
+    new MathParser.MathOperation("number", -12),
+    "parse_basic_2",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "y")]],
+    new MathParser.MathOperation("variable", "y"),
+    "parse_basic_3",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "my_var")]],
+    new MathParser.MathOperation("variable", "my_var"),
+    "parse_basic_4",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+    ]],
+    new MathParser.MathOperation("number", 12),
+    "parse_needless_nesters_1",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "["),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]"),
+    ]],
+    new MathParser.MathOperation("number", 12),
+    "parse_needless_nesters_2",
+);
+
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+    ]],
+    null,
+    "parse_null_1",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*")]],
+    null,
+    "parse_null_2",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+"),
+    ]],
+    null,
+    "parse_null_3",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[]],
+    null,
+    "parse_null_4",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "sin"),
+    ]],
+    null,
+    "parse_null_5",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "sin"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+    ]],
+    null,
+    "parse_null_6",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "sin"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+    ]],
+    null,
+    "parse_null_7",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5"),
+    ]],
+    new MathParser.MathOperation("+", 12, 5),
+    "parse_simple_1",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "-"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5"),
+    ]],
+    new MathParser.MathOperation("*", -1, 5),
+    "parse_simple_2",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "2"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5"),
+    ]],
+    new MathParser.MathOperation(
+        "+",
+        2,
+        new MathParser.MathOperation("*", 3, 5),
+    ),
+    "parse_priority_1",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "2"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5"),
+    ]],
+    new MathParser.MathOperation(
+        "*",
+        new MathParser.MathOperation("+", 2, 3),
+        5,
+    ),
+    "parse_priority_2",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "-"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "2"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "^"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "/"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "5"),
+    ]],
+    new MathParser.MathOperation(
+        "*",
+        new MathParser.MathOperation("number", -1),
+        new MathParser.MathOperation(
+            "/",
+            new MathParser.MathOperation("^", 2, 3),
+            5,
+        ),
+    ),
+    "parse_priority_3",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "sin"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+    ]],
+    new MathParser.MathOperation("sin", 12),
+    "parse_function_1",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "sin"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+    ]],
+    new MathParser.MathOperation(
+        "sin",
+        new MathParser.MathOperation("*", 12, 3),
+    ),
+    "parse_function_2",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "y"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "-"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "sin"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+    ]],
+    new MathParser.MathOperation(
+        "-",
+        new MathParser.MathOperation("variable", "y"),
+        new MathParser.MathOperation("sin", 12),
+    ),
+    "parse_function_3",
+);
+
+TestFunction(
+    MathParser.parse,
+    [[
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "["),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "3"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "+"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "x"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "]"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "*"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "("),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NUM, "12"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "-"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "exp"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "{"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_OP, "-"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NAME, "x"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, "}"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+        new MathParser.MathToken(MathParser.MTK_TYPE_NEST, ")"),
+    ]],
+    new MathParser.MathOperation(
+        "*",
+        new MathParser.MathOperation(
+            "+",
+            3,
+            new MathParser.MathOperation("variable", "x"),
+        ),
+        new MathParser.MathOperation(
+            "-",
+            12,
+            new MathParser.MathOperation(
+                "exp",
+                new MathParser.MathOperation(
+                    "*",
+                    -1,
+                    new MathParser.MathOperation("variable", "x"),
+                ),
+            ),
+        ),
+    ),
+    "parse_complex_1",
+);
+
 // Summary of tests -----------------------------------------------------------
 
 DisplayNumberOFPassedTests();
